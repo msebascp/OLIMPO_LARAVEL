@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class InscriptionSeeder extends Seeder
+class PaymentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,15 +15,17 @@ class InscriptionSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('inscriptions')->insert([
-            'registration_date' => '11/12/2022',
+        DB::table('payments')->insert([
             'payment_type' => 'efectivo',
-            'customer_id' => 2
+            'payment_date' => '01/01/2022',
+            'paid' => true,
+            'customer_id' => 1
         ]);
-        DB::table('inscriptions')->insert([
-            'registration_date' => '01/01/2023',
+        DB::table('payments')->insert([
             'payment_type' => 'efectivo',
-            'customer_id' => 3
+            'payment_date' => '01/02/2022',
+            'paid' => true,
+            'customer_id' => 1
         ]);
     }
 }

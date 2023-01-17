@@ -13,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('inscriptions', function (Blueprint $table) {
-            $table->unsignedBigInteger('customer_id');
-            $table->foreign('customer_id')->references('id')->on('customers');
+        Schema::create('payments', function (Blueprint $table) {
+            $table->id();
+            $table->string('payment_type', 32);
+            $table->string('payment_date', 32);
+            $table->boolean('paid');
+            $table->timestamps();
         });
     }
 
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('payments');
     }
 };

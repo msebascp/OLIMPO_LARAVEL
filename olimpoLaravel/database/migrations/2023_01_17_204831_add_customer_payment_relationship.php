@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('inscriptions', function (Blueprint $table) {
-            $table->id();
-            $table->string('registration_date', 32);
-            $table->string('payment_type', 32);
-            $table->timestamps();
+        Schema::table('payments', function (Blueprint $table) {
+            $table->unsignedBigInteger('customer_id');
+            $table->foreign('customer_id')->references('id')->on('customers');
         });
     }
 
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('inscriptions');
+        //
     }
 };

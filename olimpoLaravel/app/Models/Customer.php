@@ -16,6 +16,7 @@ class Customer extends Model
         'email',
         'phone',
         'password',
+        'registration_date'
     ];
 
     protected $hidden = [
@@ -24,8 +25,8 @@ class Customer extends Model
         'created_at'
     ];
 
-    public function inscription() {
-        return $this->hasOne(Inscription::class);
+    public function payment() {
+        return $this->hasMany(Payment::class);
     }
 
     public function trainer() {

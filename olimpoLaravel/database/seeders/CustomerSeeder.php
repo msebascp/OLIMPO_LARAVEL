@@ -20,6 +20,7 @@ class CustomerSeeder extends Seeder
             'surname' => 'Sanchez',
             'email' => 'gabriel@elcampico.org',
             'phone' => '123456789',
+            'registration_date' => '01/01/2021',
             'trainer_id' => 1
         ]);
         DB::table('customers')->insert([
@@ -27,6 +28,7 @@ class CustomerSeeder extends Seeder
             'surname' => 'Caselles',
             'email' => 'raul@elcampico.org',
             'phone' => '987654321',
+            'registration_date' => '01/01/2020',
             'trainer_id' => 1
         ]);
         DB::table('customers')->insert([
@@ -34,6 +36,7 @@ class CustomerSeeder extends Seeder
             'surname' => 'Perez',
             'email' => 'guillermo@elcampico.org',
             'phone' => '147258369',
+            'registration_date' => '01/01/2022',
             'trainer_id' => 2
         ]);
     }

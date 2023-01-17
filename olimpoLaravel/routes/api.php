@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\TrainerController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,8 +27,8 @@ Route::prefix('/customers')->group(function () {
     Route::middleware('validaId')->delete('/{id}', [CustomerController::class, 'delete']);
     // Se utilizan llaves {} para indicar que la ruta puede recibir un parámetro
     Route::middleware('validaId')->get('/{id}', [CustomerController::class, 'getById']);
-    Route::get('/{id}/inscriptions', [CustomerController::class, 'inscriptions']);
-    Route::get('/{id}/trainers', [CustomerController::class, 'trainers']);
+    Route::middleware('validaId')->get('/{id}/payments', [CustomerController::class, 'payments']);
+    Route::middleware('validaId')->get('/{id}/trainers', [CustomerController::class, 'trainers']);
 });
 
 Route::prefix('/trainers')->group(function () {
@@ -37,14 +37,14 @@ Route::prefix('/trainers')->group(function () {
     Route::middleware('validaId')->delete('/{id}', [TrainerController::class, 'delete']);
     // Se utilizan llaves {} para indicar que la ruta puede recibir un parámetro
     Route::middleware('validaId')->get('/{id}', [TrainerController::class, 'getById']);
-    Route::get('/{id}/customers', [TrainerController::class, 'customers']);
+    Route::middleware('validaId')->get('/{id}/customers', [TrainerController::class, 'customers']);
 });
 
-Route::prefix('/inscriptions')->group(function () {
-    Route::get('', [InscriptionController::class, 'getAll']);
-    Route::post('', [InscriptionController::class, 'create']);
-    Route::middleware('validaId')->delete('/{id}', [InscriptionController::class, 'delete']);
+Route::prefix('/payments')->group(function () {
+    Route::get('', [PaymentController::class, 'getAll']);
+    Route::post('', [PaymentController::class, 'create']);
+    Route::middleware('validaId')->delete('/{id}', [PaymentController::class, 'delete']);
     // Se utilizan llaves {} para indicar que la ruta puede recibir un parámetro
-    Route::middleware('validaId')->get('/{id}', [InscriptionController::class, 'getById']);
-    Route::get('/{id}/customers', [InscriptionController::class, 'customers']);
+    Route::middleware('validaId')->get('/{id}', [PaymentController::class, 'getById']);
+    Route::middleware('validaId')->get('/{id}/customers', [PaymentController::class, 'customers']);
 });

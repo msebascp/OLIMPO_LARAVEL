@@ -66,12 +66,12 @@ class CustomerController extends Controller
         return response()->json($response);
     }
 
-    public function inscriptions(Request $request, $id) {
+    public function payments(Request $request, $id) {
         $cliente = Customer::find($id);
-        $cliente->inscription;
+        $cliente->payment;
         $response = [
             'success' => true,
-            'message' => "Cliente con id: " . $id . " tiene la incripcion con id: " . $cliente->inscription->id,
+            'message' => "Cliente con id: " . $id,
             'Cliente' => $cliente
         ];
         return response()->json($response);

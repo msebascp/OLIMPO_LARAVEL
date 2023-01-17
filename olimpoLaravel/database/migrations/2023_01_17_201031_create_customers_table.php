@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('surname', 32);
             $table->string('email', 64)->unique();
             $table->string('phone')->nullable()->unique();
+            $table->string('registration_date', 32);
             $table->timestamps();
         });
     }
