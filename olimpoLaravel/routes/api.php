@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\loginController;
 use App\Http\Controllers\TrainerController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Http\Request;
@@ -49,3 +50,8 @@ Route::prefix('/payments')->group(function () {
     Route::middleware('validaId')->get('/{id}', [PaymentController::class, 'getById']);
     Route::middleware('validaId')->get('/{id}/customers', [PaymentController::class, 'customers']);
 });
+
+Route::post('/login', [loginController::class, 'login']);
+
+
+Route::middleware('auth:sanctum')->get('/me', [loginController::class, 'whoAmI']);
