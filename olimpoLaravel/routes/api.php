@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 });*/
 
 Route::prefix('/customers')->group(function () {
+    Route::get('/search', [CustomerController::class, 'search']);
     Route::get('', [CustomerController::class, 'getAll']);
     Route::post('', [CustomerController::class, 'create']);
     Route::middleware('validaId')->delete('/{id}', [CustomerController::class, 'delete']);

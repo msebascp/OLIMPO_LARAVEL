@@ -87,4 +87,46 @@ class CustomerController extends Controller
         ];
         return response()->json($response);
     }
+
+    public function search(Request $request) {
+        $input = $request->only([
+            'id',
+            'name',
+            'email',
+            'created_at',
+            'updated_at'
+        ]);
+        $query = DB::table('customers');
+        foreach ($input as $campo => $filter) {
+            $operator = strtoupper($filter['operator']);
+            switch($operator) {
+                case '>':
+                case '>=':
+                case '<':
+                case '<=':
+                case '=':
+                case 'LIKE':
+                    break;
+                default:
+                    $operator = '=';
+                    break;  
+            }
+            $query->orWhere(
+                $campo,
+                $operator, 
+                $filter['value']
+            );
+        }
+
+            $orderBy = $request->input('orderBy');
+            if (!empty($orderBy)) {
+                $query->orderBy(...$orderBy);
+            }
+            $limit = $request->input('limit', 100);
+
+            $query->limit($limit);
+            
+            return response()->json($query->get());
+        
+    }
 }
