@@ -25,7 +25,7 @@ class PaymentSeeder extends Seeder
             'payment_type' => 'efectivo',
             'payment_date' => '01/02/2022',
             'paid' => true,
-            'customer_id' => 2
+            'customer_id' => 1
         ]);
     }
 }

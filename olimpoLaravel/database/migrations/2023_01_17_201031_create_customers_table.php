@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('email', 64)->unique();
             $table->string('phone')->nullable()->unique();
             $table->string('registration_date', 32);
+            $table->string('typeTraining')->nullable();
+            $table->string('dateInscription')->nullable(false);
             $table->timestamps();
         });
     }
