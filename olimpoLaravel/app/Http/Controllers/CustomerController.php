@@ -72,7 +72,7 @@ class CustomerController extends Controller
         $response = [
             'success' => true,
             'message' => "Cliente con id: " . $id,
-            'Cliente' => $cliente
+            'data' => $cliente
         ];
         return response()->json($response);
     }
@@ -83,50 +83,23 @@ class CustomerController extends Controller
         $response = [
             'success' => true,
             'message' => "Cliente con id: " . $id . " tiene al entrenador con id: " . $cliente->trainer->id,
-            'Entrenador' => $cliente
+            'data' => $cliente
         ];
         return response()->json($response);
     }
 
     public function search(Request $request) {
-        $input = $request->only([
-            'id',
-            'name',
-            'email',
-            'created_at',
-            'updated_at'
-        ]);
+        $input = $request->only(['name']);
         $query = DB::table('customers');
-        foreach ($input as $campo => $filter) {
-            $operator = strtoupper($filter['operator']);
-            switch($operator) {
-                case '>':
-                case '>=':
-                case '<':
-                case '<=':
-                case '=':
-                case 'LIKE':
-                    break;
-                default:
-                    $operator = '=';
-                    break;  
-            }
-            $query->orWhere(
-                $campo,
-                $operator, 
-                $filter['value']
-            );
+
+        if (!empty($input['name']['value'])) {
+            $query->where('name', 'like', '%' . $input['name']['value'] . '%');
         }
-
-            $orderBy = $request->input('orderBy');
-            if (!empty($orderBy)) {
-                $query->orderBy(...$orderBy);
-            }
-            $limit = $request->input('limit', 100);
-
-            $query->limit($limit);
-            
-            return response()->json($query->get());
-        
+        $limit = $request->input('limit', 100);
+        $query->limit($limit);
+    
+        return response()->json($query->get());
     }
+    
+    
 }
