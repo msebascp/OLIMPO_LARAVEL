@@ -1,3 +1,21 @@
+Cree una copia de .env.example con el nombre .env
+
+Este es su archivo de entorno requerido por el proyecto laravel
+
+Abra el archivo .env y actualice este archivo con sus credenciales de conexión MySQL
+
+Después de eso, ejecute el siguiente comando
+
+php artisan key:generate
+
+php artisan config:cache
+
+composer dump-autoload
+
+Después de eso, ejecute sus comandos de migración.
+
+php artisan migrate
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
