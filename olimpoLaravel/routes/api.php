@@ -29,6 +29,7 @@ Route::prefix('/customers')->group(function () {
     Route::middleware('validaId')->delete('/{id}', [CustomerController::class, 'delete']);
     // Se utilizan llaves {} para indicar que la ruta puede recibir un parámetro
     Route::middleware('validaId')->get('/{id}', [CustomerController::class, 'getById']);
+    Route::middleware('validaId')->patch('/{id}', [CustomerController::class, 'update']);
     Route::middleware('validaId')->get('/{id}/payments', [CustomerController::class, 'payments']);
     Route::middleware('validaId')->get('/{id}/trainers', [CustomerController::class, 'trainers']);
 });

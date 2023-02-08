@@ -16,7 +16,7 @@ class TrainerSeeder extends Seeder
     public function run()
     {
         DB::table('trainers')->insert([
-            'name' => 'Alejando',
+            'name' => 'Alejandro',
             'surname' => 'Sanchez',
             'email' => 'alex@elcampico.org',
             'phone' => '123456789',

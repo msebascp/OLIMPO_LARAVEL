@@ -21,6 +21,7 @@ class CustomerSeeder extends Seeder
             'email' => 'gabriel@elcampico.org',
             'phone' => '123456789',
             'registration_date' => '01/01/2021',
+            'typeTraining' => 'Calistenia',
             'dateInscription' => '01/01/2022',
             'trainer_id' => 1
         ]);
@@ -39,8 +40,17 @@ class CustomerSeeder extends Seeder
             'email' => 'guillermo@elcampico.org',
             'phone' => '147258369',
             'registration_date' => '01/01/2022',
+            'typeTraining' => 'Fuerza',
             'dateInscription' => '01/01/2022',
             'trainer_id' => 2
+        ]);
+        DB::table('customers')->insert([
+            'name' => 'Luis',
+            'surname' => 'Cacho',
+            'email' => 'luis@elcampico.org',
+            'phone' => '999999999',
+            'registration_date' => '01/01/2022',
+            'dateInscription' => '01/01/2022',
         ]);
     }
 }
