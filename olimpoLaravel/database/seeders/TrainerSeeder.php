@@ -19,6 +19,7 @@ class TrainerSeeder extends Seeder
             'name' => 'Alejandro',
             'surname' => 'Sanchez',
             'email' => 'alex@elcampico.org',
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
             'phone' => '123456789',
             'specialty' => 'calistenia'
         ]);
@@ -26,6 +27,7 @@ class TrainerSeeder extends Seeder
             'name' => 'Rafa',
             'surname' => 'Caselles',
             'email' => 'rafa@elcampico.org',
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
             'phone' => '987654321'
         ]);
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
 {
@@ -55,9 +56,11 @@ class CustomerController extends Controller
         $cliente = Customer::findOrFail($id);
         $cliente->name = $request->name;
         $cliente->surname = $request->surname;
-        $cliente->password = $request->password;
+        $cliente->typeTraining = $request->typeTraining;
+        $cliente->password = Hash::make($request->password);
         $cliente->email = $request->email;
         $cliente->phone = $request->phone;
+        $cliente->trainer_id = $request->trainer_id;
         $cliente->save();
         $response = [
             'success' => true,
