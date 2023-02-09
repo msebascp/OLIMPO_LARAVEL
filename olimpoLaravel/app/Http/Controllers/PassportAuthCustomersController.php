@@ -21,10 +21,10 @@ class PassportAuthCustomersController extends Controller
             ]);
         }
         $request->validate([
-            'email' => 'required | email:rfc',
+            'email' => 'required',
             'password' => 'required'
         ]);
-        $user = Customer::where('email', '=', $request->email)->first();
+        $user = Customer::where('email', '=', $request->email)->orWhere('name', '=', $request->email)->first();
         if (empty($user)) {
             return response()->json([
                 "success " => false,
@@ -36,13 +36,12 @@ class PassportAuthCustomersController extends Controller
                 "message" => "Contraseña incorrecta"
             ], 401);
         }
-        $user->api_token = $user->createToken("token")->plainTextToken;
-        $user->save();
+        $token = $user->createToken("myToken")->accessToken;
         return response()->json([
             "success" => true,
             "message" => "El usuario se ha logueado",
             "data" => [
-                "token" => $user->api_token
+                $token
             ]
         ]);
     }
