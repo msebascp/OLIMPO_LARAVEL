@@ -56,5 +56,5 @@ class CustomerSeeder extends Seeder
             'registration_date' => '01/01/2022',
             'dateInscription' => '01/01/2022',
         ]);
-    }
+}
 }
