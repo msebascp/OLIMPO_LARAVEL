@@ -1,3 +1,14 @@
+-Claves client passport
+
+Personal access client created successfully.
+Client ID: 1
+Client secret: GzCIR1TTDTnD7SivJcQhHVnQpOHw68sUonou29P5
+Password grant client created successfully.
+Client ID: 2
+Client secret: CUFcA3OfCIFyNuI9UdB5kfG0hCbsN12hrZqeHPGR
+
+-Pasos a seguir cuando descargas el proyecto laravel desde git
+
 Cree una copia de .env.example con el nombre .env
 
 Este es su archivo de entorno requerido por el proyecto laravel
@@ -15,6 +26,8 @@ composer dump-autoload
 Después de eso, ejecute sus comandos de migración.
 
 php artisan migrate
+
+Fin
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
