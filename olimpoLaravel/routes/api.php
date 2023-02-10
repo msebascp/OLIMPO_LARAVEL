@@ -60,5 +60,6 @@
     Route::post('/login', [PassportAuthCustomersController::class, 'login']);
     Route::get('/logout', [PassportAuthCustomersController::class, 'logout']);
     Route::get('/whoIam', [PassportAuthCustomersController::class, 'whoIam']);
+    Route::get('/isLogin', [PassportAuthCustomersController::class, 'isLogin']);
     Route::middleware('authCustomers')->get('/me', [PassportAuthCustomersController::class, 'me']);
 

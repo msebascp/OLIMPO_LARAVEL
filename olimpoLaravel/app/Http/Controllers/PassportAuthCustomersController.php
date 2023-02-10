@@ -37,7 +37,9 @@
                     "success" => false,
                     "message" => "El usuario ya está logueado",
                     "data" => [
-                        "user" => Auth::user()
+                        "token" => "",
+                        "isTrainer" => false,
+                        "isLogin" => true
                     ]
                 ]);
             }
@@ -95,38 +97,58 @@
             ]);
         }
 
+        public function isLogin() {
+            $isLogin = false;
+            $message = '';
+            if (Auth::check()) {
+                $isLogin = true;
+                $message = 'Cliente logueado';
+            } elseif (Auth::guard('api-trainers')->check()) {
+                $isLogin = true;
+                $message = 'Admin logueado';
+            }
+            return response()->json([
+                "success" => $isLogin,
+                "message" => $message,
+                "data" => [
+                    "token" => "",
+                    "isTrainer" => false,
+                    "isLogin" => $isLogin
+                ]
+            ]);
+        }
+
         public function whoIam(Request $request)
         {
-            if (Auth::check()) {
+            if (Auth::user()) {
                 return response()->json([
                     "success" => true,
-                    "message" => "No tienes acceso a la siguiente página",
+                    "message" => "Cliente",
                     "data" => [
                         "token" => "",
                         "isTrainer" => false,
                         "isLogin" => true
                     ]
                 ]);
-            } elseif (Auth::guard('api-trainers')->check()) {
+            } elseif (Auth::guard('api-trainer') ->user()) {
                 return response()->json([
                     "success" => true,
-                    "message" => "Admin, tienes acceso",
+                    "message" => "Admin",
                     "data" => [
                         "token" => "",
                         "isTrainer" => true,
                         "isLogin" => true
                     ]
                 ]);
-            } else {
-                return response()->json([
-                    "success" => false,
-                    "message" => "No estás logueado",
-                    "data" => [
-                        "token" => "",
-                        "isTrainer" => false,
-                        "isLogin" => false
-                    ]
-                ], 401);
             }
+            return response()->json([
+                "success" => false,
+                "message" => "No logueado",
+                "data" => [
+                    "token" => "",
+                    "isTrainer" => false,
+                    "isLogin" => false
+                ]
+            ]);
         }
     }
