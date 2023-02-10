@@ -4,6 +4,7 @@
     use App\Http\Controllers\PassportAuthCustomersController;
     use App\Http\Controllers\TrainerController;
     use App\Http\Controllers\PaymentController;
+    use App\Http\Controllers\TrainingController;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,8 @@
         Route::middleware('validaId')->get('/{id}/trainers', [CustomerController::class, 'trainers']);
     });
 
+    Route::post('/savePdf', [TrainingController::class, 'saveTraining']);
+
     Route::prefix('/trainers')->group(function () {
         Route::get('', [TrainerController::class, 'getAll']);
         Route::post('', [TrainerController::class, 'create']);
@@ -51,6 +54,8 @@
         Route::middleware('validaId')->get('/{id}', [PaymentController::class, 'getById']);
         Route::middleware('validaId')->get('/{id}/customers', [PaymentController::class, 'customers']);
     });
+
+
 
     Route::post('/login', [PassportAuthCustomersController::class, 'login']);
     Route::get('/logout', [PassportAuthCustomersController::class, 'logout']);
