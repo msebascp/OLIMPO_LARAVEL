@@ -27,5 +27,23 @@ class PaymentSeeder extends Seeder
             'paid' => true,
             'customer_id' => 1
         ]);
+        DB::table('payments')->insert([
+            'payment_type' => 'efectivo',
+            'payment_date' => '01/03/2022',
+            'paid' => false,
+            'customer_id' => 2
+        ]);
+        DB::table('payments')->insert([
+            'payment_type' => 'efectivo',
+            'payment_date' => '01/04/2022',
+            'paid' => true,
+            'customer_id' => 3
+        ]);
+        DB::table('payments')->insert([
+            'payment_type' => 'efectivo',
+            'payment_date' => '01/05/2022',
+            'paid' => false,
+            'customer_id' => 4
+        ]);
     }
 }
