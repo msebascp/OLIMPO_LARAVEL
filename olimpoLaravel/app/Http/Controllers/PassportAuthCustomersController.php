@@ -31,13 +31,11 @@
 
         public function login(Request $request)
         {
-            $trainer = false;
             if (Auth::check()) {
                 return response()->json([
                     "success" => false,
-                    "message" => "El usuario ya está logueado",
+                    "message" => "El cliente ya está logueado",
                     "data" => [
-                        "token" => "",
                         "isTrainer" => false,
                         "isLogin" => true
                     ]
@@ -47,30 +45,27 @@
                 'email' => 'required',
                 'password' => 'required'
             ]);
-            $user = Customer::where('email', '=', $request->email)->first();
-            if (empty($user)) {
-                $user = Trainer::where('email', '=', $request->email)->first();
-                $trainer = true;
-            }
-            if (empty($user)) {
+            $customer = Customer::where('email', '=', $request->email)->first();
+            if (empty($customer)) {
                 return response()->json([
                     "success " => false,
                     "message" => "El usuario no existe",
                     "data" => []
                 ], 401);
-            } elseif (!Hash::check($request->password, $user->password)) {
+            } elseif (!Hash::check($request->password, $customer->password)) {
                 return response()->json([
                     "success" => false,
                     "message" => "Contraseña incorrecta",
                     "data" => []
                 ], 401);
             }
-            $token = $user->createToken("myToken")->accessToken;
+            $token = $customer->createToken("myToken")->accessToken;
             return response()->json([
                 "success" => true,
                 "message" => "El usuario se ha logueado",
                 "data" => [
-                    "isTrainer" => $trainer,
+                    "isTrainer" => false,
+                    "isLogin" => true,
                     "token" => $token
                 ]
             ]);
@@ -82,7 +77,10 @@
             $user->token()->revoke();
             return response()->json([
                 "success" => true,
-                "message" => "Cierre de sesión correcto"
+                "message" => "Cierre de sesión correcto",
+                "data" => [
+                    "isLogin" => false
+                ]
             ]);
         }
 
@@ -98,57 +96,26 @@
         }
 
         public function isLogin() {
-            $isLogin = false;
-            $message = '';
             if (Auth::check()) {
-                $isLogin = true;
-                $message = 'Cliente logueado';
-            } elseif (Auth::guard('api-trainers')->check()) {
-                $isLogin = true;
-                $message = 'Admin logueado';
-            }
-            return response()->json([
-                "success" => $isLogin,
-                "message" => $message,
-                "data" => [
-                    "token" => "",
-                    "isTrainer" => false,
-                    "isLogin" => $isLogin
-                ]
-            ]);
-        }
-
-        public function whoIam(Request $request)
-        {
-            if (Auth::user()) {
                 return response()->json([
                     "success" => true,
-                    "message" => "Cliente",
+                    "message" => 'El cliente está logueado',
                     "data" => [
                         "token" => "",
                         "isTrainer" => false,
                         "isLogin" => true
                     ]
                 ]);
-            } elseif (Auth::guard('api-trainer') ->user()) {
+            } else {
                 return response()->json([
-                    "success" => true,
-                    "message" => "Admin",
+                    "success" => false,
+                    "message" => 'El cliente no está logueado',
                     "data" => [
                         "token" => "",
-                        "isTrainer" => true,
-                        "isLogin" => true
+                        "isTrainer" => false,
+                        "isLogin" => false
                     ]
                 ]);
             }
-            return response()->json([
-                "success" => false,
-                "message" => "No logueado",
-                "data" => [
-                    "token" => "",
-                    "isTrainer" => false,
-                    "isLogin" => false
-                ]
-            ]);
         }
     }
