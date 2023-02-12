@@ -29,7 +29,7 @@ class TrainingController extends Controller
         
         $response = [
             'success' => true,
-            'message' => "PDF guardado correctamente"
+            'message' => "Entrenamiento guardado correctamente"
         ];
         return response()->json($response);
     }
@@ -37,6 +37,6 @@ class TrainingController extends Controller
     
     public function getTrainings(Request $request)
     {
-        
+
     }
 }
