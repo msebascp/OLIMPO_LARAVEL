@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\AuthCustomers;
+use App\Http\Middleware\AuthTrainers;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -55,6 +56,7 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'authCustomers' => AuthCustomers::class,
+        'authTrainers' => AuthTrainers::class,
         'validaId' => \App\Http\Middleware\validateId::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
