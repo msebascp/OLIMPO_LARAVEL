@@ -5,8 +5,10 @@
     use App\Models\Customer;
     use App\Models\Trainer;
     use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\App;
     use Illuminate\Support\Facades\Auth;
     use Illuminate\Support\Facades\Hash;
+    use Laravel\Passport\ClientRepository;
 
     class PassportAuthCustomersController extends Controller
     {
@@ -59,7 +61,11 @@
                     "data" => []
                 ], 401);
             }
-            $token = $customer->createToken("myToken")->accessToken;
+            App::clearResolvedInstance(ClientRepository::class);
+            app()->singleton(ClientRepository::class, function () {
+                return new ClientRepository(13, 'SgK9gniC50uIwvebBP7D0qNaeqDM9EnKcInpw8Dn'); // You should give the client id in the first parameter
+            });
+            $token = $customer->createToken("client-Token")->accessToken;
             return response()->json([
                 "success" => true,
                 "message" => "El usuario se ha logueado",
