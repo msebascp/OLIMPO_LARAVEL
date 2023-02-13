@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Trainer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Passport\ClientRepository;
 
 class PassportAuthTrainersController extends Controller
 {
@@ -39,6 +41,10 @@ class PassportAuthTrainersController extends Controller
                 "data" => []
             ], 401);
         }
+        App::clearResolvedInstance(ClientRepository::class);
+        app()->singleton(ClientRepository::class, function () {
+            return new ClientRepository(15, 'GRp1YCgt07NCJdLGCNbojmKWwSAd4uiXHT2K7wOq'); // You should give the client id in the first parameter
+        });
         $token = $trainer->createToken("trainer-token")->accessToken;
         return response()->json([
             "success" => true,

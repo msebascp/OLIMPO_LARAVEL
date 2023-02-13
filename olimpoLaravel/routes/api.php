@@ -5,6 +5,7 @@
     use App\Http\Controllers\PassportAuthTrainersController;
     use App\Http\Controllers\TrainerController;
     use App\Http\Controllers\PaymentController;
+    use App\Http\Controllers\TrainingController;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Route;
 
@@ -35,10 +36,11 @@
         Route::middleware('validaId')->get('/{id}/trainers', [CustomerController::class, 'trainers']);
         //Parte de autentificación con Passport:
         Route::post('/login', [PassportAuthCustomersController::class, 'login']);
-        Route::get('/logout', [PassportAuthCustomersController::class, 'logout']);
         Route::get('/isLogin', [PassportAuthCustomersController::class, 'isLogin']);
-        Route::middleware('authCustomers')->get('/me', [PassportAuthCustomersController::class, 'me']);
+        //da error no sé por qué Route::middleware('authCustomers')->get('/me', [PassportAuthCustomersController::class, 'me']);
     });
+
+    Route::post('/savePdf', [TrainingController::class, 'saveTraining']);
 
     Route::prefix('/trainers')->group(function () {
         Route::get('', [TrainerController::class, 'getAll']);
@@ -49,9 +51,8 @@
         Route::middleware('validaId')->get('/{id}/customers', [TrainerController::class, 'customers']);
         //Parte de autentificación con Passport:
         Route::post('/login', [PassportAuthTrainersController::class, 'login']);
-        Route::get('/logout', [PassportAuthTrainersController::class, 'logout']);
         Route::get('/isLogin', [PassportAuthTrainersController::class, 'isLogin']);
-        Route::middleware('authTrainers')->get('/me', [PassportAuthTrainersController::class, 'me']);
+        //da error no sé por qué Route::middleware('authTrainers')->get('/me', [PassportAuthTrainersController::class, 'me']);
     });
 
     Route::prefix('/payments')->group(function () {
@@ -63,3 +64,7 @@
         Route::middleware('validaId')->get('/{id}/customers', [PaymentController::class, 'customers']);
     });
 
+    Route::middleware('authCustomers')->get('/me', [PassportAuthCustomersController::class, 'me']);
+    Route::get('/logout', [PassportAuthCustomersController::class, 'logout']);
+    Route::middleware('authTrainers')->get('/trainer/me', [PassportAuthTrainersController::class, 'me']);
+    Route::get('/trainer/logout', [PassportAuthTrainersController::class, 'logout']);

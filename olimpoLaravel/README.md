@@ -1,4 +1,4 @@
--Claves client passport
+-Claves client passport de cliente y entrenador
 
 Personal access client created successfully.
 Client ID: 1
