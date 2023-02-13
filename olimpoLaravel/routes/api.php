@@ -5,6 +5,7 @@
     use App\Http\Controllers\PassportAuthTrainersController;
     use App\Http\Controllers\TrainerController;
     use App\Http\Controllers\PaymentController;
+    use App\Http\Controllers\TrainingController;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Route;
 
@@ -38,6 +39,8 @@
         Route::get('/isLogin', [PassportAuthCustomersController::class, 'isLogin']);
         //da error no sé por qué Route::middleware('authCustomers')->get('/me', [PassportAuthCustomersController::class, 'me']);
     });
+
+    Route::post('/savePdf', [TrainingController::class, 'saveTraining']);
 
     Route::prefix('/trainers')->group(function () {
         Route::get('', [TrainerController::class, 'getAll']);
