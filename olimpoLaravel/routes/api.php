@@ -34,6 +34,7 @@
         Route::middleware('validaId')->patch('/{id}', [CustomerController::class, 'update']);
         Route::middleware('validaId')->get('/{id}/payments', [CustomerController::class, 'payments']);
         Route::middleware('validaId')->get('/{id}/trainers', [CustomerController::class, 'trainers']);
+        Route::middleware('validaId')->get('/{id}/trainings', [CustomerController::class, 'getTrainings']);
         //Parte de autentificación con Passport:
         Route::post('/login', [PassportAuthCustomersController::class, 'login']);
         Route::get('/logout', [PassportAuthCustomersController::class, 'logout']);
@@ -42,6 +43,8 @@
     });
 
     Route::post('/savePdf', [TrainingController::class, 'saveTraining']);
+    Route::middleware('validaId')->get('/trainings/{id}/customers', [TrainingController::class, 'getCustomer']);
+
 
     Route::prefix('/trainers')->group(function () {
         Route::get('', [TrainerController::class, 'getAll']);

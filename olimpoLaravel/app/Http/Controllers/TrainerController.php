@@ -68,13 +68,13 @@ class TrainerController extends Controller
         return response()->json($response);
     }
 
-    public function customers(Request $request, $id) {
+    public function getCustomer(Request $request, $id) {
         $entrenador = Trainer::find($id);
         $entrenador->customer;
         $response = [
             'success' => true,
-            'message' => "Entrenador con id: " . $id . " tiene estos clientes" ,
-            'Entrenador' => $entrenador
+            'message' => "Entrenamiento con id: " . $id . " tiene estos clientes" ,
+            'data' => $entrenador
         ];
         return response()->json($response);
     }

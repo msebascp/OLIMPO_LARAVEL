@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Training;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -104,5 +105,14 @@ class CustomerController extends Controller
         return response()->json($query->get());
     }
     
-    
+    public function getTrainings(Request $request, $id) {
+        $customer = Customer::find($id);
+        $trainings = $customer->trainings;
+        $response = [
+            'success' => true,
+            'message' => "Cliente con id: " . $id . " tiene estos entrenamientos" ,
+            'data' => $trainings
+        ];
+        return response()->json($response);
+    }
 }
