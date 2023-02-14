@@ -1,11 +1,12 @@
--Claves client passport de cliente y entrenador
-
-Personal access client created successfully.
-Client ID: 1
-Client secret: GzCIR1TTDTnD7SivJcQhHVnQpOHw68sUonou29P5
-Password grant client created successfully.
-Client ID: 2
-Client secret: CUFcA3OfCIFyNuI9UdB5kfG0hCbsN12hrZqeHPGR
+-Datos necesarios para la autentificación de usuarios, tabla oauthClients:
+    Una fila:
+        -id 13
+        -secret SgK9gniC50uIwvebBP7D0qNaeqDM9EnKcInpw8Dn
+        -provider customers
+    Otra fila:
+        -id 15
+        -secret GRp1YCgt07NCJdLGCNbojmKWwSAd4uiXHT2K7wOq
+        -provider trainers
 
 -Pasos a seguir cuando descargas el proyecto laravel desde git
 
