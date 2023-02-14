@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->binary('pdfTraining');
-            $table->foreignId('id_customer')->constrained('customers');
+            $table->foreignId('id_customer')->references('id')->on('customers');
             $table->timestamps();
         });
     }

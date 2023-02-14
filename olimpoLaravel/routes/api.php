@@ -34,11 +34,16 @@
         Route::middleware('validaId')->patch('/{id}', [CustomerController::class, 'update']);
         Route::middleware('validaId')->get('/{id}/payments', [CustomerController::class, 'payments']);
         Route::middleware('validaId')->get('/{id}/trainers', [CustomerController::class, 'trainers']);
+        Route::middleware('validaId')->get('/{id}/trainings', [CustomerController::class, 'getTrainings']);
+        Route::get('/download/pdf/{filename}', [CustomerController::class, 'downloadPDF']);
+
 
         //da error no sé por qué Route::middleware('authCustomers')->get('/me', [PassportAuthCustomersController::class, 'me']);
     });
 
     Route::post('/savePdf', [TrainingController::class, 'saveTraining']);
+    Route::middleware('validaId')->get('/trainings/{id}/customers', [TrainingController::class, 'getCustomer']);
+
 
     Route::prefix('/trainers')->group(function () {
         Route::get('', [TrainerController::class, 'getAll']);

@@ -35,4 +35,8 @@ class Customer extends Authenticatable
     public function trainer() {
         return $this->belongsTo(Trainer::class);
     }
+
+    public function trainings() {
+        return $this->hasMany(Training::class, 'id_customer', 'id');
+    }
 }
