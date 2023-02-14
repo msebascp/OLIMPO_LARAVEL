@@ -34,6 +34,9 @@
         Route::middleware('validaId')->patch('/{id}', [CustomerController::class, 'update']);
         Route::middleware('validaId')->get('/{id}/payments', [CustomerController::class, 'payments']);
         Route::middleware('validaId')->get('/{id}/trainers', [CustomerController::class, 'trainers']);
+        Route::middleware('validaId')->get('/{id}/trainings', [CustomerController::class, 'getTrainings']);
+        Route::get('/download/pdf/{filename}', [CustomerController::class, 'downloadPDF']);
+
 
         //da error no sé por qué Route::middleware('authCustomers')->get('/me', [PassportAuthCustomersController::class, 'me']);
     });
