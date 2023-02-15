@@ -46,6 +46,7 @@ Route::middleware('validaId')->get('/trainings/{id}/customers', [TrainingControl
 Route::prefix('/blog')->group(function () {
     Route::post('/createPost', [BlogController::class, 'create']);
     Route::get('', [BlogController::class, 'getAll']);
+    Route::middleware('validaId')->delete('/deletePost/{id}', [BlogController::class, 'delete']);
 });
 
 
