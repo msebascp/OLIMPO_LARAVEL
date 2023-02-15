@@ -47,6 +47,10 @@ Route::prefix('/blog')->group(function () {
     Route::post('/createPost', [BlogController::class, 'create']);
     Route::get('', [BlogController::class, 'getAll']);
     Route::middleware('validaId')->delete('/deletePost/{id}', [BlogController::class, 'delete']);
+    Route::middleware('validaId')->get('/{id}', [BlogController::class, 'getById']);
+    Route::middleware('validaId')->post('/{id}', [BlogController::class, 'update']);
+
+
 });
 
 
