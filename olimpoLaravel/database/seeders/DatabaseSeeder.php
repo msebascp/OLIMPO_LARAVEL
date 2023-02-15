@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             TrainerSeeder::class,
             CustomerSeeder::class,
             PaymentSeeder::class,
+            OauthClientsSeeder::class
         ]);
         // \App\Models\User::factory(10)->create();
 

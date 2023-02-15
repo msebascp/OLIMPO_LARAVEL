@@ -51,7 +51,7 @@
             if (empty($customer)) {
                 return response()->json([
                     "success " => false,
-                    "message" => "El usuario no existe",
+                    "message" => "El correo no corresponde a ningún usuario",
                     "data" => []
                 ], 401);
             } elseif (!Hash::check($request->password, $customer->password)) {

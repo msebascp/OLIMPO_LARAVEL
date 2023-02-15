@@ -31,7 +31,7 @@ class PassportAuthTrainersController extends Controller
         if (empty($trainer)) {
             return response()->json([
                 "success " => false,
-                "message" => "El entrenador no existe",
+                "message" => "El correo no corresponde a ningún entrenador",
                 "data" => []
             ], 401);
         } elseif (!Hash::check($request->password, $trainer->password)) {
