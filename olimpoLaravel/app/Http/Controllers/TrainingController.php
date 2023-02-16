@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Training;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class TrainingController extends Controller
 {
@@ -33,6 +35,28 @@ class TrainingController extends Controller
         ];
         return response()->json($response);
     }
+    public function delete(Request $request, $id)
+    {
+        $training = Training::findOrFail($id);
+    
+        // Elimina el archivo PDF asociado con el registro
+        if ($training->pdfTraining) {
+            Storage::delete($training->pdfTraining);
+        }
+    
+        // Elimina el registro de la base de datos
+        $training->delete();
+    
+        // Responde con un mensaje de éxito
+        $response = [
+            'success' => true,
+            'message' => "Entrenamiento borrado correctamente",
+        ];
+        return response()->json($response);
+    }
+    
+
+
 
 
     public function getCustomer(Request $request, $id)
