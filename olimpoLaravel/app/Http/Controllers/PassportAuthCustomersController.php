@@ -124,4 +124,16 @@
                 ]);
             }
         }
+
+        public function getAllTrainings(Request $request)
+        {
+            $customer = Auth::user();
+            $trainings = $customer->trainings;
+            $response = [
+                'success' => true,
+                'message' => "Cliente tiene estos entrenamientos",
+                'data' => $trainings
+            ];
+            return response()->json($response);
+        }
     }
