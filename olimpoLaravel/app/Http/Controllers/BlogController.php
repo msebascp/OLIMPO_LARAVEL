@@ -98,19 +98,27 @@ class BlogController extends Controller
         }
 
 
-        
+
     }
 
 
 
     public function delete(Request $request, $id)
     {
-        DB::table('blogs')->where('id', $id)->delete();
+        $post = Blog::findOrFail($id);
+
+        if ($post->photo) {
+            Storage::delete($post->photo);
+        }
+
+        $post->delete();
+        
         $response = [
             'success' => true,
             'message' => "Post borrado correctamente",
         ];
         return response()->json($response);
     }
+
 
 }

@@ -42,6 +42,8 @@ Route::prefix('/customers')->group(function () {
 
 Route::post('/savePdf', [TrainingController::class, 'saveTraining']);
 Route::middleware('validaId')->get('/trainings/{id}/customers', [TrainingController::class, 'getCustomer']);
+Route::middleware('validaId')->delete('/trainings/{id}', [TrainingController::class, 'delete']);
+
 
 Route::prefix('/blog')->group(function () {
     Route::post('/createPost', [BlogController::class, 'create']);
