@@ -73,6 +73,7 @@ Route::prefix('/payments')->group(function () {
 });
 
 //Parte de autentificación con Passport Customer:
+Route::post('/register', [PassportAuthCustomersController::class, 'register']);
 Route::post('/login', [PassportAuthCustomersController::class, 'login']);
 Route::get('/isLogin', [PassportAuthCustomersController::class, 'isLogin']);
 Route::middleware('authCustomers')->get('/me', [PassportAuthCustomersController::class, 'me']);

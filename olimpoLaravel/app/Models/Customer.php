@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -13,11 +15,12 @@ class Customer extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
     public $table = "customers";
 
+    public $timestamps = false;
+
     protected $fillable = [
         'name',
         'surname',
         'email',
-        'phone',
         'password',
         'registration_date'
     ];
@@ -28,15 +31,21 @@ class Customer extends Authenticatable
         'created_at'
     ];
 
-    public function payment() {
+    public function payment(): HasMany
+    {
         return $this->hasMany(Payment::class);
     }
 
-    public function trainer() {
+    public function trainer(): BelongsTo
+    {
         return $this->belongsTo(Trainer::class);
     }
 
-    public function trainings() {
+    /**
+     * @property Collection|Training[] $trainings
+     */
+    public function trainings(): HasMany
+    {
         return $this->hasMany(Training::class, 'id_customer', 'id');
     }
 }

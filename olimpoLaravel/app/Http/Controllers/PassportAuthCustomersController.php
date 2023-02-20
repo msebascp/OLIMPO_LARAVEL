@@ -3,35 +3,53 @@
     namespace App\Http\Controllers;
 
     use App\Models\Customer;
-    use App\Models\Trainer;
+    use Illuminate\Http\JsonResponse;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\App;
     use Illuminate\Support\Facades\Auth;
     use Illuminate\Support\Facades\Hash;
+    use Illuminate\Validation\ValidationException;
     use Laravel\Passport\ClientRepository;
 
     class PassportAuthCustomersController extends Controller
     {
-        public function register(Request $request)
+        public function register(Request $request): JsonResponse
         {
-            $data = $request->validate([
-                'name' => 'required',
-                'email' => 'required | email:rfc | unique:owners',
-                'password' => 'required',
-            ]);
-            $data['password'] = Hash::make($data['password']);
-            $user = new Customer($data);
-            $user->save();
+            try {
+                $data = $request->validate([
+                    'name' => 'required',
+                    'email' => 'required|email:rfc|unique:customers',
+                    'surname' => 'required',
+                ], [
+                    'required' => ':attribute es requerido',
+                    'email' => ':attribute debe ser una dirección de correo electrónico válida',
+                    'unique' => ':attribute ya ha sido registrado'
+                ]);
+            } catch (ValidationException $e) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validation error',
+                    'errors' => $e->errors()
+                ], 422);
+            }
+            $customer = new Customer($data);
+            $customer->typeTraining = $request->typeTraining;
+            $customer->trainer_id = $request->trainer_id;
+            $customer->password = Hash::make('password');
+            $customer->dateInscription = today();
+            $customer->lastPayment = today();
+            $customer->nextPayment = today()->addMonth();
+            $customer->save();
             return response()->json([
                 "success" => true,
                 "message" => "Usuario registrado",
                 "data" => [
-                    $user
+                    $customer
                 ]
             ]);
         }
 
-        public function login(Request $request)
+        public function login(Request $request): JsonResponse
         {
             if (Auth::check()) {
                 return response()->json([
@@ -77,7 +95,7 @@
             ]);
         }
 
-        public function logout(Request $request)
+        public function logout(Request $request): JsonResponse
         {
             $user = Auth::user();
             $user->token()->revoke();
@@ -90,7 +108,7 @@
             ]);
         }
 
-        public function me(Request $request)
+        public function me(Request $request): JsonResponse
         {
             return response()->json([
                 "success" => true,
@@ -101,7 +119,8 @@
             ]);
         }
 
-        public function isLogin() {
+        public function isLogin(): JsonResponse
+        {
             if (Auth::check()) {
                 return response()->json([
                     "success" => true,
@@ -125,7 +144,7 @@
             }
         }
 
-        public function getAllTrainings(Request $request)
+        public function getAllTrainings(Request $request): JsonResponse
         {
             $customer = Auth::user();
             $trainings = $customer->trainings;
