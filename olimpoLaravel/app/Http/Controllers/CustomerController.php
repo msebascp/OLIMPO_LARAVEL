@@ -66,7 +66,6 @@ class CustomerController extends Controller
         $cliente->typeTraining = $request->typeTraining;
         $cliente->password = Hash::make($request->password);
         $cliente->email = $request->email;
-        $cliente->phone = $request->phone;
         $cliente->trainer_id = $request->trainer_id;
         $cliente->save();
         $response = [
