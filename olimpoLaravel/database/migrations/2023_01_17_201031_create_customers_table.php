@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('password');
             $table->string('typeTraining')->nullable();
             $table->date('dateInscription');
-            $table->date('lastPayment');
             $table->date('nextPayment');
         });
     }

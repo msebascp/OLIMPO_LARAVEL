@@ -37,7 +37,6 @@
             $customer->trainer_id = $request->trainer_id;
             $customer->password = Hash::make('password');
             $customer->dateInscription = today();
-            $customer->lastPayment = today();
             $customer->nextPayment = today()->addMonth();
             $customer->save();
             return response()->json([

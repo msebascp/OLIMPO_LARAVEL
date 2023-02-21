@@ -22,7 +22,6 @@ class CustomerSeeder extends Seeder
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
             'typeTraining' => 'Calistenia',
             'dateInscription' => today(),
-            'lastPayment' => today(),
             'nextPayment' => today()->addMonth(),
             'trainer_id' => 1
         ]);
@@ -32,7 +31,6 @@ class CustomerSeeder extends Seeder
             'email' => 'raul@elcampico.org',
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
             'dateInscription' => today(),
-            'lastPayment' => today(),
             'nextPayment' => today()->addMonth(),
             'trainer_id' => 1
         ]);
@@ -43,7 +41,6 @@ class CustomerSeeder extends Seeder
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
             'typeTraining' => 'Fuerza',
             'dateInscription' => today(),
-            'lastPayment' => today(),
             'nextPayment' => today()->addMonth(),
             'trainer_id' => 2
         ]);
@@ -53,7 +50,6 @@ class CustomerSeeder extends Seeder
             'email' => 'luis@elcampico.org',
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
             'dateInscription' => today(),
-            'lastPayment' => today(),
             'nextPayment' => today()->addMonth(),
         ]);
 }
