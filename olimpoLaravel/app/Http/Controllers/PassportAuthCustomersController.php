@@ -144,6 +144,17 @@
             }
         }
 
+        public function getTrainer(Request $request): JsonResponse {
+            $customer = Auth::user();
+            $trainer = $customer->trainer;
+            $response = [
+                'success' => true,
+                'message' => "Cliente tiene al entrenador",
+                'data' => $trainer
+            ];
+            return response()->json($response);
+        }
+
         public function getAllTrainings(Request $request): JsonResponse
         {
             $customer = Auth::user();
