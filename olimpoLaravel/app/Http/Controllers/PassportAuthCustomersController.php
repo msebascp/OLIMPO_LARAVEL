@@ -11,6 +11,7 @@
     use Illuminate\Support\Facades\App;
     use Illuminate\Support\Facades\Auth;
     use Illuminate\Support\Facades\Hash;
+    use Illuminate\Support\Facades\Storage;
     use Illuminate\Validation\ValidationException;
     use Laravel\Passport\ClientRepository;
 
@@ -154,6 +155,7 @@
         public function getTrainer(Request $request): JsonResponse {
             $customer = Auth::user();
             $trainer = $customer->trainer;
+            $trainer->photo = Storage::url($trainer->photo);
             $response = [
                 'success' => true,
                 'message' => "Cliente tiene al entrenador",

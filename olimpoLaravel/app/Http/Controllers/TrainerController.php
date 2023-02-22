@@ -22,6 +22,7 @@ class TrainerController extends Controller
 
     public function getById(Request $request, $id) {
         $entrenador = Trainer::findOrFail($id);
+        $entrenador->photo = Storage::url($entrenador->photo);
         $response = [
             'success' => true,
             'message' => "Entrenador con id: " . $id . " obtenido",

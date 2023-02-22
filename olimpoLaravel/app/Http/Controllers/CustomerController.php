@@ -25,6 +25,7 @@ class CustomerController extends Controller
     public function getById(Request $request, $id)
     {
         $cliente = Customer::findOrFail($id);
+        $cliente->photo = Storage::url($cliente->photo);
         $response = [
             'success' => true,
             'message' => "Cliente con id: " . $id . " obtenido",

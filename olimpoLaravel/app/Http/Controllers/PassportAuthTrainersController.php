@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Passport\ClientRepository;
 
 class PassportAuthTrainersController extends Controller
@@ -72,10 +73,12 @@ class PassportAuthTrainersController extends Controller
 
     public function me(Request $request)
     {
+        $trainer = Auth::guard('api-trainers')->user();
+        $trainer->photo = Storage::url($trainer->photo);
         return response()->json([
             "success" => true,
             "message" => "Datos de usuario: ",
-            "data" => Auth::guard('api-trainers')->user()
+            "data" => $trainer
             
         ]);
     }
