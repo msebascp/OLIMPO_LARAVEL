@@ -75,9 +75,8 @@ class PassportAuthTrainersController extends Controller
         return response()->json([
             "success" => true,
             "message" => "Datos de usuario: ",
-            "data" => [
-                "Entrenador" => Auth::guard('api-trainers')->user()
-            ]
+            "data" => Auth::guard('api-trainers')->user()
+            
         ]);
     }
 

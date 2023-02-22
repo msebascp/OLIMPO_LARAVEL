@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('payment_type', 32);
             $table->string('payment_date', 32);
             $table->boolean('paid');
+            $table->foreignId('customer_id')->constrained('customers');
             $table->timestamps();
         });
     }
