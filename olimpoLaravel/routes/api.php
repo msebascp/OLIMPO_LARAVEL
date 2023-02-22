@@ -82,6 +82,7 @@ Route::middleware('authCustomers')->get('/me', [PassportAuthCustomersController:
 Route::get('/logout', [PassportAuthCustomersController::class, 'logout']);
 Route::get('/customer/trainer', [PassportAuthCustomersController::class, 'getTrainer']);
 Route::get('/customer/trainings', [PassportAuthCustomersController::class, 'getAllTrainings']);
+Route::get('/customer/{id}/pay', [PassportAuthCustomersController::class, 'pay']);
 //Parte de autentificación con Passport Trainer:
 Route::post('/trainer/login', [PassportAuthTrainersController::class, 'login']);
 Route::get('/trainer/isLogin', [PassportAuthTrainersController::class, 'isLogin']);

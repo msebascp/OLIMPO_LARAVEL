@@ -22,7 +22,10 @@ class Customer extends Authenticatable
         'surname',
         'email',
         'password',
-        'registration_date'
+        'typeTraining',
+        'dateInscription',
+        'nextPayment',
+        'trainer_id',
     ];
 
     protected $hidden = [

@@ -33,21 +33,6 @@ class CustomerController extends Controller
         return response()->json($response);
     }
 
-    public function create(Request $request)
-    {
-        Customer::insert($request->validate([
-            'name' => 'required|string',
-            'surname' => 'required|string',
-            'email' => 'required|string|unique:clientes',
-            'phone' => 'string|unique:clientes',
-        ]));
-        $response = [
-            'success' => true,
-            'message' => "Cliente creado correctamente"
-        ];
-        return response()->json($response);
-    }
-
     public function delete(Request $request, $id)
     {
         DB::table('customers')->where('id', $id)->delete();

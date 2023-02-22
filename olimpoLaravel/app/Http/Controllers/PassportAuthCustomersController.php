@@ -3,8 +3,11 @@
     namespace App\Http\Controllers;
 
     use App\Models\Customer;
+    use App\Models\Payment;
+    use Cassandra\Date;
     use Illuminate\Http\JsonResponse;
     use Illuminate\Http\Request;
+    use Illuminate\Support\Carbon;
     use Illuminate\Support\Facades\App;
     use Illuminate\Support\Facades\Auth;
     use Illuminate\Support\Facades\Hash;
@@ -32,13 +35,18 @@
                     'errors' => $e->errors()
                 ], 422);
             }
-            $customer = new Customer($data);
-            $customer->typeTraining = $request->typeTraining;
-            $customer->trainer_id = $request->trainer_id;
-            $customer->password = Hash::make('password');
-            $customer->dateInscription = today();
-            $customer->nextPayment = today()->addMonth();
-            $customer->save();
+            $data['trainer_id'] = $request->trainer_id;
+            $data['password'] = Hash::make('password');
+            $data['typeTraining'] = $request->typeTraining;
+            $data['dateInscription'] = today();
+            $data['nextPayment'] = today()->addMonth();
+            $customer = Customer::create($data);
+            $payment = new Payment();
+            $payment->payment_type = 'Efectivo';
+            $payment->payment_date = today();
+            $payment->paid = true;
+            $payment->customer_id = $customer->id;
+            $payment->save();
             return response()->json([
                 "success" => true,
                 "message" => "Usuario registrado",
@@ -164,5 +172,26 @@
                 'data' => $trainings
             ];
             return response()->json($response);
+        }
+
+        public function pay(Request $request) {
+            $id = $request->id;
+            $customer = Customer::findOrFail($id);
+            if ($customer->nextPayment < today()) {
+                $customer->nextPayment = today()->addMonth();
+            } else {
+                $customer->nextPayment = Carbon::parse($customer->nextPayment)->addMonth();
+            }
+            $payment = new Payment();
+            $payment->payment_type = 'Efectivo';
+            $payment->payment_date = today();
+            $payment->paid = true;
+            $payment->customer_id = $customer->id;
+            $payment->save();
+            $customer->save();
+            return response()->json([
+                "success" => true,
+                "message" => "Pago realizado correctamente",
+            ]);
         }
     }
