@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('phone')->nullable()->unique();
             $table->string('specialty', 32)->nullable();
+            $table->binary('photo')->nullable();
             $table->timestamps();
         });
     }

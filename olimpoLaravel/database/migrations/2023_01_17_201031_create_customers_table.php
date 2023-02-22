@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('typeTraining')->nullable();
             $table->date('dateInscription');
             $table->date('nextPayment');
+            $table->foreignId('trainer_id')->nullable()->constrained('trainers');
+            $table->binary('photo')->nullable();
         });
     }
 
