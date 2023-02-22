@@ -23,6 +23,7 @@ return new class extends Migration
             $table->date('dateInscription');
             $table->date('nextPayment');
             $table->foreignId('trainer_id')->nullable()->constrained('trainers');
+            $table->binary('photo')->nullable();
         });
     }
 
