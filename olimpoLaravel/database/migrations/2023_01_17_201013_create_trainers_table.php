@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('surname', 32);
             $table->string('email', 64);
             $table->string('password');
-            $table->string('phone')->nullable()->unique();
             $table->string('specialty', 32)->nullable();
             $table->binary('photo')->nullable();
             $table->timestamps();

@@ -33,21 +33,6 @@ class CustomerController extends Controller
         return response()->json($response);
     }
 
-    public function create(Request $request)
-    {
-        Customer::insert($request->validate([
-            'name' => 'required|string',
-            'surname' => 'required|string',
-            'email' => 'required|string|unique:clientes',
-            'phone' => 'string|unique:clientes',
-        ]));
-        $response = [
-            'success' => true,
-            'message' => "Cliente creado correctamente"
-        ];
-        return response()->json($response);
-    }
-
     public function delete(Request $request, $id)
     {
         DB::table('customers')->where('id', $id)->delete();
@@ -61,18 +46,36 @@ class CustomerController extends Controller
     public function update(Request $request, $id)
     {
         $cliente = Customer::findOrFail($id);
-        $cliente->name = $request->name;
-        $cliente->surname = $request->surname;
-        $cliente->typeTraining = $request->typeTraining;
-        $cliente->password = Hash::make($request->password);
-        $cliente->email = $request->email;
-        $cliente->trainer_id = $request->trainer_id;
-        $cliente->save();
-        $response = [
-            'success' => true,
-            'message' => "Cliente modificado correctamente",
-        ];
-        return response()->json($response);
+        if ($cliente) {
+            $cliente->name = $request->name;
+            $cliente->surname = $request->surname;
+            $cliente->typeTraining = $request->typeTraining;
+            $cliente->email = $request->email;
+            $cliente->trainer_id = $request->trainer_id;
+            if ($request->hasFile('photo')) {
+                $image = $request->file('photo');
+    
+                // Valida la imagen
+                $request->validate([
+                    'photo' => 'image|max:4048', // máx 4 MB
+                ]);
+    
+                // Elimina la imagen antigua si existe
+                if ($cliente->photo) {
+                    Storage::delete($cliente->photo);
+                }
+    
+                // Guarda la imagen nueva y guarda su nombre en la base de datos
+                $imagePath = $image->store('public/customerPhoto');
+                $cliente->photo = $imagePath;
+            }
+            $cliente->save();
+            $response = [
+                'success' => true,
+                'message' => "Cliente modificado correctamente",
+            ];
+            return response()->json($response);
+        }
     }
 
     public function payments(Request $request, $id)

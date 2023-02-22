@@ -32,7 +32,7 @@ Route::prefix('/customers')->group(function () {
     Route::middleware('validaId')->delete('/{id}', [CustomerController::class, 'delete']);
     // Se utilizan llaves {} para indicar que la ruta puede recibir un parámetro
     Route::middleware('validaId')->get('/{id}', [CustomerController::class, 'getById']);
-    Route::middleware('validaId')->patch('/{id}', [CustomerController::class, 'update']);
+    Route::middleware('validaId')->post('/{id}', [CustomerController::class, 'update']);
     Route::middleware('validaId')->get('/{id}/payments', [CustomerController::class, 'payments']);
     Route::middleware('validaId')->get('/{id}/trainers', [CustomerController::class, 'trainers']);
     Route::middleware('validaId')->get('/{id}/trainings', [CustomerController::class, 'getTrainings']);
@@ -60,6 +60,7 @@ Route::prefix('/trainers')->group(function () {
     Route::get('', [TrainerController::class, 'getAll']);
     Route::post('', [TrainerController::class, 'create']);
     Route::middleware('validaId')->delete('/{id}', [TrainerController::class, 'delete']);
+    Route::middleware('validaId')->post('/{id}', [TrainerController::class, 'update']);
     // Se utilizan llaves {} para indicar que la ruta puede recibir un parámetro
     Route::middleware('validaId')->get('/{id}', [TrainerController::class, 'getById']);
     Route::middleware('validaId')->get('/{id}/customers', [TrainerController::class, 'customers']);
