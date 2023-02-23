@@ -17,7 +17,6 @@ class Trainer extends Authenticatable
         'name',
         'surname',
         'email',
-        'phone',
         'specialty',
         'password',
     ];
