@@ -66,7 +66,6 @@ class BlogController extends Controller
     public function update(Request $request, $id)
     {
         $post = Blog::findOrFail($id);
-
         if ($post) {
             $post->title = $request->input('title');
             $post->description = $request->input('description');
@@ -96,9 +95,6 @@ class BlogController extends Controller
             ];
             return response()->json($response);
         }
-
-
-
     }
 
 

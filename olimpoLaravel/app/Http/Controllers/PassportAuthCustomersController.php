@@ -11,6 +11,7 @@
     use Illuminate\Support\Facades\App;
     use Illuminate\Support\Facades\Auth;
     use Illuminate\Support\Facades\Hash;
+    use Illuminate\Support\Facades\Storage;
     use Illuminate\Validation\ValidationException;
     use Laravel\Passport\ClientRepository;
 
@@ -23,16 +24,27 @@
                     'name' => 'required',
                     'email' => 'required|email:rfc|unique:customers',
                     'surname' => 'required',
-                ], [
-                    'required' => ':attribute es requerido',
-                    'email' => ':attribute debe ser una dirección de correo electrónico válida',
-                    'unique' => ':attribute ya ha sido registrado'
                 ]);
             } catch (ValidationException $e) {
+                $errors = $e->validator->getMessageBag();
+                $errorMessages = [];
+
+                if ($errors->has('name')) {
+                    $errorMessages['name'] = 'El nombre es requerido.';
+                }
+
+                if ($errors->has('email')) {
+                    $errorMessages['email'] = 'El correo electrónico es inválido o ya ha sido registrado.';
+                }
+
+                if ($errors->has('surname')) {
+                    $errorMessages['surname'] = 'El apellido es requerido.';
+                }
+
                 return response()->json([
                     'success' => false,
                     'message' => 'Validation error',
-                    'errors' => $e->errors()
+                    'errors' => $errorMessages
                 ], 422);
             }
             $data['trainer_id'] = $request->trainer_id;
@@ -154,6 +166,7 @@
         public function getTrainer(Request $request): JsonResponse {
             $customer = Auth::user();
             $trainer = $customer->trainer;
+            $trainer->photo = Storage::url($trainer->photo);
             $response = [
                 'success' => true,
                 'message' => "Cliente tiene al entrenador",

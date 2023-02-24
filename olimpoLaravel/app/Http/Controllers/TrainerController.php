@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Trainer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class TrainerController extends Controller
 {
@@ -20,25 +22,11 @@ class TrainerController extends Controller
 
     public function getById(Request $request, $id) {
         $entrenador = Trainer::findOrFail($id);
+        $entrenador->photo = Storage::url($entrenador->photo);
         $response = [
             'success' => true,
             'message' => "Entrenador con id: " . $id . " obtenido",
             'data' => $entrenador
-        ];
-        return response()->json($response);
-    }
-
-    public function create(Request $request) {
-        Trainer::insert($request->validate([
-            'name' => 'required|string',
-            'surname' => 'required|string',
-            'email' => 'required|string|unique:clientes',
-            'phone' => 'string|unique:clientes',
-            'specialty' => 'string'
-        ]));
-        $response = [
-            'success' => true,
-            'message' => "Entrenador creado correctamente"
         ];
         return response()->json($response);
     }
@@ -54,16 +42,41 @@ class TrainerController extends Controller
 
     public function update(Request $request, $id) {
         $entrenador = Trainer::findOrFail($id);
-        $entrenador->name = $request->name;
-        $entrenador->surname = $request->surname;
-        $entrenador->email = $request->email;
-        $entrenador->specialty = $request->specialty;
-        $entrenador->save();
-        $response = [
-            'success' => true,
-            'message' => "Entrenador modificado correctamente",
-        ];
-        return response()->json($response);
+        if ($entrenador) {
+            $validatedData = $request->validate([
+                'name' => 'required|string',
+                'surname' => 'required|string',
+                'email' => 'required|string',
+                'specialty' => 'string'
+            ]);
+            $entrenador->name = $validatedData['name'];
+            $entrenador->surname = $validatedData['surname'];
+            $entrenador->email = $validatedData['email'];
+            $entrenador->specialty = $validatedData['specialty'];
+            if ($request->hasFile('photo')) {
+                $image = $request->file('photo');
+    
+                // Valida la imagen
+                $request->validate([
+                    'photo' => 'image|max:4048', // máx 4 MB
+                ]);
+    
+                // Elimina la imagen antigua si existe
+                if ($entrenador->photo) {
+                    Storage::delete($entrenador->photo);
+                }
+    
+                // Guarda la imagen nueva y guarda su nombre en la base de datos
+                $imagePath = $image->store('public/trainerPhoto');
+                $entrenador->photo = $imagePath;
+            }
+            $entrenador->save();
+            $response = [
+                'success' => true,
+                'message' => "Entrenador modificado correctamente",
+            ];
+            return response()->json($response);
+        }
     }
 
     public function getCustomer(Request $request, $id) {
