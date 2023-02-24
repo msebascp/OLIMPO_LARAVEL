@@ -103,4 +103,21 @@ class PassportAuthTrainersController extends Controller
             ]);
         }
     }
+
+    public function TrainerEditAccount(Request $request){
+        $trainer = Auth::guard("api-trainers")->user();
+        $trainer->name = $request->name;
+        $trainer->surname = $request->surname;
+        $trainer->email = $request->email;
+        $trainer->specialty = $request->specialty;
+        $trainer->save();
+
+        $response = [
+            'success' => true,
+            'message' => "Entrenador editado correctamente"
+        ];
+        return response()->json($response);
+
+
+    }
 }

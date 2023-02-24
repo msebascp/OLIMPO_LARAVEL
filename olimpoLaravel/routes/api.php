@@ -88,3 +88,8 @@ Route::post('/trainer/login', [PassportAuthTrainersController::class, 'login']);
 Route::get('/trainer/isLogin', [PassportAuthTrainersController::class, 'isLogin']);
 Route::middleware('authTrainers')->get('/trainer/me', [PassportAuthTrainersController::class, 'me']);
 Route::get('/trainer/logout', [PassportAuthTrainersController::class, 'logout']);
+
+//Editar admin
+
+
+Route::post('/trainer/editAccount', [PassportAuthTrainersController::class, 'TrainerEditAccount']);

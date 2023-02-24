@@ -56,9 +56,7 @@ class TrainerController extends Controller
         $entrenador = Trainer::findOrFail($id);
         $entrenador->name = $request->name;
         $entrenador->surname = $request->surname;
-        $entrenador->password = $request->password;
         $entrenador->email = $request->email;
-        $entrenador->phone = $request->phone;
         $entrenador->specialty = $request->specialty;
         $entrenador->save();
         $response = [
