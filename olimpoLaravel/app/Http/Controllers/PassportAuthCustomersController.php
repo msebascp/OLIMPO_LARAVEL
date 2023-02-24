@@ -207,4 +207,22 @@
                 "message" => "Pago realizado correctamente",
             ]);
         }
+
+        public function customerEditAccount(Request $request){
+            $customer = Auth::user();
+            $customer->name = $request->name;
+            $customer->surname = $request->surname;
+            $customer->typeTraining = $request->typeTraining;
+            $customer->email = $request->email;
+            $customer->trainer_id = $request->trainer_id;
+            $customer->save();
+    
+            $response = [
+                'success' => true,
+                'message' => "Cliente editado correctamente"
+            ];
+            return response()->json($response);
+    
+    
+        }
     }

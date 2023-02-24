@@ -78,7 +78,7 @@
     Route::post('/register', [PassportAuthCustomersController::class, 'register']);
     Route::post('/login', [PassportAuthCustomersController::class, 'login']);
     Route::get('/isLogin', [PassportAuthCustomersController::class, 'isLogin']);
-    Route::middleware('authCustomers')->get('/me', [PassportAuthCustomersController::class, 'me']);
+    Route::middleware('authCustomers')->get('/customer/me', [PassportAuthCustomersController::class, 'me']);
     Route::get('/logout', [PassportAuthCustomersController::class, 'logout']);
     Route::get('/customer/trainer', [PassportAuthCustomersController::class, 'getTrainer']);
     Route::get('/customer/trainings', [PassportAuthCustomersController::class, 'getAllTrainings']);
@@ -100,4 +100,5 @@
 //Editar admin
 
 
-Route::post('/trainer/editAccount', [PassportAuthTrainersController::class, 'TrainerEditAccount']);
+Route::post('/trainer/editAccount', [PassportAuthTrainersController::class, 'trainerEditAccount']);
+Route::post('/customer/editAccount', [PassportAuthCustomersController::class, 'customerEditAccount']);
