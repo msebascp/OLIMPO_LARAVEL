@@ -72,6 +72,7 @@
         // Se utilizan llaves {} para indicar que la ruta puede recibir un parámetro
         Route::middleware('validaId')->get('/{id}', [PaymentController::class, 'getById']);
         Route::middleware('validaId')->get('/{id}/customers', [PaymentController::class, 'customers']);
+        Route::middleware('validaId')->post('/{id}/update', [PaymentController::class, 'update']);
     });
 
     //Parte de autentificación con Passport Customer:
