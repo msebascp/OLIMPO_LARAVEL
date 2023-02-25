@@ -4,7 +4,6 @@
 
     use App\Models\Customer;
     use App\Models\Payment;
-    use Cassandra\Date;
     use Illuminate\Http\JsonResponse;
     use Illuminate\Http\Request;
     use Illuminate\Support\Carbon;

@@ -13,6 +13,7 @@ class ProductController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string',
             'description' => 'required|string',
+            'price' => 'required|string',
             'photo' => 'required|image|max:4048', // Ejemplo: tamaño máximo de 4MB
         ]);
         $photo = $request->file('photo');
@@ -20,6 +21,7 @@ class ProductController extends Controller
         $product = new Product();
         $product->name = $validatedData['name'];
         $product->description = $validatedData['description'];
+        $product->price = $validatedData['price'];
         $product->photo = $photo->store('public/store');
         $product->save();
 
@@ -31,13 +33,13 @@ class ProductController extends Controller
 
     public function getAll(Request $request)
     {
-        $products = Product::all(['id', 'name', 'description', 'photo']);
+        $products = Product::all(['id', 'name', 'price', 'description', 'photo']);
         foreach ($products as $product) {
             $product->photo = Storage::url($product->photo);
         }
         return response()->json([
             'success' => true,
-            'message' => "Blogs obtenidos correctamente",
+            'message' => "Productos obtenidos correctamente",
             'data' => $products
         ]);
     }
@@ -45,13 +47,11 @@ class ProductController extends Controller
     public function getById(Request $request, $id)
     {
         $product = Product::findOrFail($id);
-
-
         $product->photo = Storage::url($product->photo);
 
         return response()->json([
             'success' => true,
-            'message' => "Post con id: " . $id . " obtenido",
+            'message' => "Producto con id: " . $id . " obtenido",
             'data' => [$product]
         ]);
     }
@@ -62,6 +62,7 @@ class ProductController extends Controller
         if ($product) {
             $product->name = $request->input('name');
             $product->description = $request->input('description');
+            $product->price = $request->input('price');
 
             // Verifica si hay una imagen nueva
             if ($request->hasFile('photo')) {

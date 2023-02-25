@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\Payment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
@@ -52,10 +55,12 @@ class PaymentController extends Controller
 
     public function update(Request $request, $id) {
         $payment = Payment::findOrFail($id);
-        $payment->payment_type = $request->payment_type;
-        $payment->payment_date = $request->payment_date;
-        $payment->paid = $request->paid;
+        $payment->payment_date = $request->date;
         $payment->save();
+        $newDate = Carbon::parse($request->date);
+        $customer = Customer::findOrFail($payment->customer_id);
+        $customer->nextPayment = $newDate->addMonth();
+        $customer->save();
         $response = [
             'success' => true,
             'message' => "Pago modificado correctamente",
