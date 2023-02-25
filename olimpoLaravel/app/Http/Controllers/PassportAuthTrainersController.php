@@ -151,7 +151,7 @@ class PassportAuthTrainersController extends Controller
         }
     }
 
-    public function TrainerEditAccount(Request $request){
+    public function trainerEditAccount(Request $request){
         $trainer = Auth::guard("api-trainers")->user();
         $trainer->name = $request->name;
         $trainer->surname = $request->surname;
