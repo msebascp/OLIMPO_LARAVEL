@@ -243,4 +243,15 @@
     
     
         }
+
+        public function endPoint(Request $request){
+            $user = Auth::user();
+            $user->tokens()->delete();
+            $response = [
+                'success' => true,
+                'message' => "Se ha cerrado sesión correctamente"
+            ];
+            return response()->json($response);
+    
+        }
     }

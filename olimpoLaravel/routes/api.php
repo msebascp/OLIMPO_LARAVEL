@@ -101,3 +101,6 @@
 //Editar admin
 Route::post('/trainer/editAccount', [PassportAuthTrainersController::class, 'trainerEditAccount']);
 Route::post('/customer/editAccount', [PassportAuthCustomersController::class, 'customerEditAccount']);
+
+//endPoint
+Route::get('/endPoint', [PassportAuthCustomersController::class, 'endPoint']);
