@@ -128,6 +128,8 @@
 
         public function me(Request $request): JsonResponse
         {
+            $customer = Auth::user();
+            $customer->photo = Storage::url($customer->photo);
             return response()->json([
                 "success" => true,
                 "message" => "Datos de usuario: ",
@@ -214,6 +216,23 @@
             $customer->typeTraining = $request->typeTraining;
             $customer->email = $request->email;
             $customer->trainer_id = $request->trainer_id;
+            if ($request->hasFile('photo')) {
+                $image = $request->file('photo');
+    
+                // Valida la imagen
+                $validated = $request->validate([
+                    'photo' => 'required|image|max:4048', // máx 4 MB
+                ]);
+    
+                // Elimina la imagen antigua si existe
+                if ($customer->photo) {
+                    Storage::delete($customer->photo);
+                }
+    
+                // Guarda la imagen nueva y guarda su nombre en la base de datos
+                $imagePath = $image->store('public/customerPhoto');
+                $customer->photo = $imagePath;
+            }
             $customer->save();
     
             $response = [

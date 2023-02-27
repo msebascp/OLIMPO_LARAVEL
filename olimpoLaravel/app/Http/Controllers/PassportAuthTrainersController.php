@@ -157,6 +157,23 @@ class PassportAuthTrainersController extends Controller
         $trainer->surname = $request->surname;
         $trainer->email = $request->email;
         $trainer->specialty = $request->specialty;
+        if ($request->hasFile('photo')) {
+            $image = $request->file('photo');
+
+            // Valida la imagen
+            $validated = $request->validate([
+                'photo' => 'required|image|max:4048', // máx 4 MB
+            ]);
+
+            // Elimina la imagen antigua si existe
+            if ($trainer->photo) {
+                Storage::delete($trainer->photo);
+            }
+
+            // Guarda la imagen nueva y guarda su nombre en la base de datos
+            $imagePath = $image->store('public/trainerPhoto');
+            $trainer->photo = $imagePath;
+        }
         $trainer->save();
 
         $response = [
