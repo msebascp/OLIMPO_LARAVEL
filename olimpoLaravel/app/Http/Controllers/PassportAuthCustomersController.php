@@ -249,7 +249,7 @@
             $user->tokens()->delete();
             $response = [
                 'success' => true,
-                'message' => "Se ha cerrado sesión correctamente"
+                'message' => "Se ha cerrado sesión en todos los dispositivos correctamente"
             ];
             return response()->json($response);
     

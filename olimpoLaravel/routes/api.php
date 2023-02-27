@@ -104,3 +104,4 @@ Route::post('/customer/editAccount', [PassportAuthCustomersController::class, 'c
 
 //endPoint
 Route::get('/endPoint', [PassportAuthCustomersController::class, 'endPoint']);
+Route::get('/endPointTrainer', [PassportAuthTrainersController::class, 'endPointTrainer']);
