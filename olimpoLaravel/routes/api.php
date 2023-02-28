@@ -2,6 +2,7 @@
 
     use App\Http\Controllers\BlogController;
     use App\Http\Controllers\CustomerController;
+    use App\Http\Controllers\ImcRecordController;
     use App\Http\Controllers\PassportAuthCustomersController;
     use App\Http\Controllers\PassportAuthTrainersController;
     use App\Http\Controllers\ProductController;
@@ -35,10 +36,17 @@
         Route::middleware('validaId')->get('/{id}', [CustomerController::class, 'getById']);
         Route::middleware('validaId')->post('/{id}', [CustomerController::class, 'update']);
         Route::middleware('validaId')->get('/{id}/payments', [CustomerController::class, 'payments']);
+        Route::middleware('validaId')->get('/{id}/imcRecords', [CustomerController::class, 'imcRecords']);
         Route::middleware('validaId')->get('/{id}/trainers', [CustomerController::class, 'trainers']);
         Route::middleware('validaId')->get('/{id}/trainings', [CustomerController::class, 'getTrainings']);
         Route::get('/download/pdf/{filename}', [CustomerController::class, 'downloadPDF']);
+    });
 
+    Route::prefix('/imcRecords')->group(function () {
+        Route::get('', [ImcRecordController::class, 'getAll']);
+        Route::post('', [ImcRecordController::class, 'create']);
+        Route::middleware('validaId')->delete('/{id}', [ImcRecordController::class, 'delete']);
+        Route::middleware('validaId')->get('/{id}/customers', [ImcRecordController::class, 'customers']);
     });
 
     Route::post('/savePdf', [TrainingController::class, 'saveTraining']);

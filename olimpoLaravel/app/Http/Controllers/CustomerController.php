@@ -91,6 +91,18 @@ class CustomerController extends Controller
         return response()->json($response);
     }
 
+    public function imcRecords(Request $request, $id)
+    {
+        $cliente = Customer::find($id);
+        $cliente->imcRecord;
+        $response = [
+            'success' => true,
+            'message' => "Cliente con id: " . $id,
+            'data' => $cliente
+        ];
+        return response()->json($response);
+    }
+
     public function trainers(Request $request, $id)
     {
         $cliente = Customer::find($id);

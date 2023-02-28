@@ -51,4 +51,9 @@ class Customer extends Authenticatable
     {
         return $this->hasMany(Training::class, 'id_customer', 'id');
     }
+
+    public function imcRecord(): HasMany
+    {
+        return $this->hasMany(ImcRecord::class);
+    }
 }
