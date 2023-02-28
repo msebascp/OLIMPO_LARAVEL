@@ -181,7 +181,16 @@ class PassportAuthTrainersController extends Controller
             'message' => "Entrenador editado correctamente"
         ];
         return response()->json($response);
+    }
 
+    public function endPointTrainer(Request $request){
+        $user = Auth::guard("api-trainers")->user();
+        $user->tokens()->delete();
+        $response = [
+            'success' => true,
+            'message' => "Se ha cerrado sesión en todos los dispositivos correctamente"
+        ];
+        return response()->json($response);
 
     }
 }
