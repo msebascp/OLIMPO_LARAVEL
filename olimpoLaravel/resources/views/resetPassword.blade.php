@@ -1,3 +1,3 @@
-<p>You requested password rest of your account. If you want to change password <a href="http://localhost:4200/reset-password?token={{ $token }}">click</a> here.</p>
+<p>Para cambiar tu contraseña haz <a href="http://localhost:4200/resetPassword?token={{ $token }}">click</a> aquí.</p>
 
-or, copy and paste the URL below into your web browser: http://localhost:4200/reset-password?token={{ $token }}
+o, copia este enlace en tu navegador: http://localhost:4200/resetPassword?token={{ $token }}

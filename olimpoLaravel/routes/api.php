@@ -118,3 +118,5 @@ Route::get('/endPointTrainer', [PassportAuthTrainersController::class, 'endPoint
 //Reset Password
 Route::post('/forgotPassword', [ResetPasswordController::class, 'forgetPassword']);
 Route::post('/resetPassword', [ResetPasswordController::class, 'resetPassword']);
+Route::post('/forgotPasswordTrainer', [ResetPasswordController::class, 'forgetPasswordTrainer']);
+Route::post('/resetPasswordTrainer', [ResetPasswordController::class, 'resetPasswordTrainer']);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Trainer;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -72,6 +73,72 @@ class ResetPasswordController extends Controller
 
         $customer->password = Hash::make($request->password);
         $customer->save();
+
+        DB::table('password_resets')->where('token', $token)->delete();
+
+        return response(['message' => 'Password Successfully Updated.'], 200);
+    }
+
+    public function forgetPasswordTrainer(Request $request)
+    {
+        $email = $request->email;
+        $trainer = Trainer::where('email', $request->email)->first();
+        if (empty($trainer)) {
+            return response()->json([
+                "success " => false,
+                "message" => "El correo no corresponde a ningún usuario",
+            ]);
+        }
+        $token = Str::random(60);
+        try {
+            DB::table('password_resets')->insert([
+                'email' => $email,
+                'token' => $token
+            ]);
+            Mail::send('resetPasswordTrainer', ['token'=>$token], function ($message) use($email){
+                $message->to($email);
+                $message->subject('Reset Your Password');
+            });
+            return response()->json([
+                "success " => true,
+                "message" => $token,
+            ]);
+        } catch (Exception $exception) {
+            return response()->json([
+                "success " => false,
+                "message" => $exception->getMessage(),
+            ]);
+        }
+    }
+
+    public function resetPasswordTrainer(Request $request)
+    {
+        $this->validate($request, [
+            'token' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        $token = $request->token;
+        $passwordRest = DB::table('password_resets')->where('token', $token)->first();
+
+        // Verificando si el token es correcto
+        if (!$passwordRest) {
+            return response(['message' => 'Token Not Found.'], 200);
+        }
+
+        // Validando fecha del token
+        /**if (!$passwordRest->created_at > now()) {
+        return response(['message' => 'Token has expired.'], 200);
+        }*/
+
+        $trainer = Trainer::where('email', $passwordRest->email)->first();
+
+        if (!$trainer) {
+            return response(['message' => 'User does not exists.'], 200);
+        }
+
+        $trainer->password = Hash::make($request->password);
+        $trainer->save();
 
         DB::table('password_resets')->where('token', $token)->delete();
 
