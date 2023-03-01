@@ -51,7 +51,8 @@ use App\Http\Controllers\TrainerController;
         Route::middleware('validaId')->get('/{id}/customers', [ImcRecordController::class, 'customers']);
     });
 
-
+    Route::get('/information', [InformationController::class, 'getAll']);
+    Route::middleware('validaId')->post('/information/{id}', [InformationController::class, 'update']);
 
 
     Route::post('/savePdf', [TrainingController::class, 'saveTraining']);

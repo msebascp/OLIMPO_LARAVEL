@@ -15,6 +15,11 @@ class InformationSeeder extends Seeder
      */
     public function run()
     {
-
+        DB::table('information')->insert([
+            'instagram' => 'https://www.instagram.com/olimpogymorihuela/',
+            'facebook' => 'https://es-es.facebook.com/olimpogymfc/',
+            'horario1' => '09:00 - 12:00 / 15:00 - 21:00.',
+            'horario2' => '17:00 - 21:00.',
+        ]);
     }
 }
