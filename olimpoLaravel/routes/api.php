@@ -3,6 +3,7 @@
     use App\Http\Controllers\BlogController;
     use App\Http\Controllers\CustomerController;
     use App\Http\Controllers\ImcRecordController;
+    use App\Http\Controllers\InformationController;
     use App\Http\Controllers\PassportAuthCustomersController;
     use App\Http\Controllers\PassportAuthTrainersController;
     use App\Http\Controllers\ProductController;
@@ -48,6 +49,9 @@
         Route::middleware('validaId')->delete('/{id}', [ImcRecordController::class, 'delete']);
         Route::middleware('validaId')->get('/{id}/customers', [ImcRecordController::class, 'customers']);
     });
+
+
+
 
     Route::post('/savePdf', [TrainingController::class, 'saveTraining']);
     Route::middleware('validaId')->get('/trainings/{id}/customers', [TrainingController::class, 'getCustomer']);
