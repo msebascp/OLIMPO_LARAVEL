@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Auth\Passwords\CanResetPassword;
 
 class Trainer extends Authenticatable
 {
