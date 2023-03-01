@@ -218,30 +218,30 @@
             $customer->trainer_id = $request->trainer_id;
             if ($request->hasFile('photo')) {
                 $image = $request->file('photo');
-    
+
                 // Valida la imagen
                 $validated = $request->validate([
                     'photo' => 'required|image|max:4048', // máx 4 MB
                 ]);
-    
+
                 // Elimina la imagen antigua si existe
                 if ($customer->photo) {
                     Storage::delete($customer->photo);
                 }
-    
+
                 // Guarda la imagen nueva y guarda su nombre en la base de datos
                 $imagePath = $image->store('public/customerPhoto');
                 $customer->photo = $imagePath;
             }
             $customer->save();
-    
+
             $response = [
                 'success' => true,
                 'message' => "Cliente editado correctamente"
             ];
             return response()->json($response);
-    
-    
+
+
         }
 
         public function endPoint(Request $request){
@@ -252,6 +252,6 @@
                 'message' => "Se ha cerrado sesión en todos los dispositivos correctamente"
             ];
             return response()->json($response);
-    
+
         }
     }

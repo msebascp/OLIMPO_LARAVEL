@@ -7,11 +7,12 @@
     use App\Http\Controllers\PassportAuthCustomersController;
     use App\Http\Controllers\PassportAuthTrainersController;
     use App\Http\Controllers\ProductController;
-    use App\Http\Controllers\TrainerController;
+use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\TrainerController;
     use App\Http\Controllers\PaymentController;
     use App\Http\Controllers\TrainingController;
-    use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Route;
+
 
     /*
     |--------------------------------------------------------------------------
@@ -117,3 +118,7 @@ Route::post('/customer/editAccount', [PassportAuthCustomersController::class, 'c
 //endPoint
 Route::get('/endPoint', [PassportAuthCustomersController::class, 'endPoint']);
 Route::get('/endPointTrainer', [PassportAuthTrainersController::class, 'endPointTrainer']);
+
+//Reset Password
+Route::post('/forgotPassword', [ResetPasswordController::class, 'forgetPassword']);
+Route::post('/resetPassword', [ResetPasswordController::class, 'resetPassword']);
