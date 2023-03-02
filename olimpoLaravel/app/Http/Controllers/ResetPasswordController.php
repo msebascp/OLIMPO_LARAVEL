@@ -21,7 +21,7 @@ class ResetPasswordController extends Controller
         $customer = Customer::where('email', $request->email)->first();
         if (empty($customer)) {
             return response()->json([
-                "success " => false,
+                "success" => false,
                 "message" => "El correo no corresponde a ningún usuario",
             ]);
         }
@@ -36,12 +36,12 @@ class ResetPasswordController extends Controller
                 $message->subject('Reset Your Password');
             });
             return response()->json([
-                "success " => true,
-                "message" => $token,
+                "success" => true,
+                "message" => 'Correo electrónico para cambiar la contraseña enviado',
             ]);
         } catch (Exception $exception) {
             return response()->json([
-                "success " => false,
+                "success" => false,
                 "message" => $exception->getMessage(),
             ]);
         }
@@ -96,7 +96,7 @@ class ResetPasswordController extends Controller
         $trainer = Trainer::where('email', $request->email)->first();
         if (empty($trainer)) {
             return response()->json([
-                "success " => false,
+                "success" => false,
                 "message" => "El correo no corresponde a ningún usuario",
             ]);
         }
@@ -111,12 +111,12 @@ class ResetPasswordController extends Controller
                 $message->subject('Reset Your Password');
             });
             return response()->json([
-                "success " => true,
-                "message" => $token,
+                "success" => true,
+                "message" => 'Correo electrónico para cambiar la contraseña enviado',
             ]);
         } catch (Exception $exception) {
             return response()->json([
-                "success " => false,
+                "success" => false,
                 "message" => $exception->getMessage(),
             ]);
         }
