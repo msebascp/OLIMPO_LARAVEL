@@ -6,10 +6,12 @@ use App\Models\Customer;
 use App\Models\Trainer;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class ResetPasswordController extends Controller
 {
@@ -57,7 +59,10 @@ class ResetPasswordController extends Controller
 
         // Verificando si el token es correcto
         if (!$passwordRest) {
-            return response(['message' => 'Token Not Found.'], 200);
+            return response()->json([
+                'success' => false,
+                'message' => 'El correo no está asociado a ningún usuario'
+            ]);
         }
 
         // Validando fecha del token
@@ -68,7 +73,10 @@ class ResetPasswordController extends Controller
         $customer = Customer::where('email', $passwordRest->email)->first();
 
         if (!$customer) {
-            return response(['message' => 'User does not exists.'], 200);
+            return response()->json([
+                'success' => false,
+                'message' => 'El correo no está asociado a ningún cliente'
+            ]);
         }
 
         $customer->password = Hash::make($request->password);
@@ -76,7 +84,10 @@ class ResetPasswordController extends Controller
 
         DB::table('password_resets')->where('token', $token)->delete();
 
-        return response(['message' => 'Password Successfully Updated.'], 200);
+        return response()->json([
+            'success' => true,
+            'message' => 'Contraseña cambiada correctamente'
+        ]);
     }
 
     public function forgetPasswordTrainer(Request $request)
@@ -123,7 +134,10 @@ class ResetPasswordController extends Controller
 
         // Verificando si el token es correcto
         if (!$passwordRest) {
-            return response(['message' => 'Token Not Found.'], 200);
+            return response()->json([
+                'success' => false,
+                'message' => 'Token caducado o erróneo'
+            ]);
         }
 
         // Validando fecha del token
@@ -134,7 +148,10 @@ class ResetPasswordController extends Controller
         $trainer = Trainer::where('email', $passwordRest->email)->first();
 
         if (!$trainer) {
-            return response(['message' => 'User does not exists.'], 200);
+            return response()->json([
+                'success' => false,
+                'message' => 'El correo no está asociado a ningún entrenador'
+            ]);
         }
 
         $trainer->password = Hash::make($request->password);
@@ -142,6 +159,51 @@ class ResetPasswordController extends Controller
 
         DB::table('password_resets')->where('token', $token)->delete();
 
-        return response(['message' => 'Password Successfully Updated.'], 200);
+        return response()->json([
+            'success' => true,
+            'message' => 'Contraseña cambiada correctamente'
+        ]);
+    }
+
+    public function changePassword(Request $request)
+    {
+        try {
+            $password = $request->validate([
+               'password' => 'required'
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json() ([
+               'success' => false,
+               'message' => $e
+            ]);
+        }
+        $customer = Auth::user();
+        $customer->password = Hash::make($password['password']);
+        $customer->save();
+        return response()->json([
+            'success' => true,
+            'message' => 'Contraseña cambiada correctamente'
+        ]);
+    }
+
+    public function changePasswordTrainer(Request $request)
+    {
+        try {
+            $password = $request->validate([
+                'password' => 'required'
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json() ([
+                'success' => false,
+                'message' => $e
+            ]);
+        }
+        $trainer = Auth::guard('api-trainers')->user();
+        $trainer->password = Hash::make($password['password']);
+        $trainer->save();
+        return response()->json([
+            'success' => true,
+            'message' => 'Contraseña cambiada correctamente'
+        ]);
     }
 }

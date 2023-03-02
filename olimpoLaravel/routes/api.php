@@ -125,3 +125,5 @@ Route::post('/forgotPassword', [ResetPasswordController::class, 'forgetPassword'
 Route::post('/resetPassword', [ResetPasswordController::class, 'resetPassword']);
 Route::post('/forgotPasswordTrainer', [ResetPasswordController::class, 'forgetPasswordTrainer']);
 Route::post('/resetPasswordTrainer', [ResetPasswordController::class, 'resetPasswordTrainer']);
+Route::post('/changePassword', [ResetPasswordController::class, 'changePassword']);
+Route::post('/changePasswordTrainer', [ResetPasswordController::class, 'changePasswordTrainer']);
