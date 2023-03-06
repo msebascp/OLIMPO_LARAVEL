@@ -13,9 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('payments', function (Blueprint $table) {
-            $table->unsignedBigInteger('customer_id');
-            $table->foreign('customer_id')->references('id')->on('customers');
+        Schema::create('information', function (Blueprint $table) {
+            $table->id();
+            $table->string('instagram');
+            $table->string('facebook');
+            $table->string('horario1');
+            $table->string('horario2');
+            $table->timestamps();
         });
     }
 
@@ -26,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('information');
     }
 };

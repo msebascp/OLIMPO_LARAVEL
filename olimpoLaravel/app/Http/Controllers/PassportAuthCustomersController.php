@@ -3,35 +3,71 @@
     namespace App\Http\Controllers;
 
     use App\Models\Customer;
-    use App\Models\Trainer;
+    use App\Models\Payment;
+    use Illuminate\Http\JsonResponse;
     use Illuminate\Http\Request;
+    use Illuminate\Support\Carbon;
     use Illuminate\Support\Facades\App;
     use Illuminate\Support\Facades\Auth;
     use Illuminate\Support\Facades\Hash;
+    use Illuminate\Support\Facades\Storage;
+    use Illuminate\Validation\ValidationException;
     use Laravel\Passport\ClientRepository;
 
     class PassportAuthCustomersController extends Controller
     {
-        public function register(Request $request)
+        public function register(Request $request): JsonResponse
         {
-            $data = $request->validate([
-                'name' => 'required',
-                'email' => 'required | email:rfc | unique:owners',
-                'password' => 'required',
-            ]);
-            $data['password'] = Hash::make($data['password']);
-            $user = new Customer($data);
-            $user->save();
+            try {
+                $data = $request->validate([
+                    'name' => 'required',
+                    'email' => 'required|email:rfc|unique:customers',
+                    'surname' => 'required',
+                ]);
+            } catch (ValidationException $e) {
+                $errors = $e->validator->getMessageBag();
+                $errorMessages = [];
+
+                if ($errors->has('name')) {
+                    $errorMessages['name'] = 'El nombre es requerido.';
+                }
+
+                if ($errors->has('email')) {
+                    $errorMessages['email'] = 'El correo electrónico es inválido o ya ha sido registrado.';
+                }
+
+                if ($errors->has('surname')) {
+                    $errorMessages['surname'] = 'El apellido es requerido.';
+                }
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validation error',
+                    'errors' => $errorMessages
+                ], 422);
+            }
+            $data['trainer_id'] = $request->trainer_id;
+            $data['password'] = Hash::make('password');
+            $data['typeTraining'] = $request->typeTraining;
+            $data['dateInscription'] = today();
+            $data['nextPayment'] = today()->addMonth();
+            $customer = Customer::create($data);
+            $payment = new Payment();
+            $payment->payment_type = 'Efectivo';
+            $payment->payment_date = today();
+            $payment->paid = true;
+            $payment->customer_id = $customer->id;
+            $payment->save();
             return response()->json([
                 "success" => true,
                 "message" => "Usuario registrado",
                 "data" => [
-                    $user
+                    $customer
                 ]
             ]);
         }
 
-        public function login(Request $request)
+        public function login(Request $request): JsonResponse
         {
             if (Auth::check()) {
                 return response()->json([
@@ -51,7 +87,7 @@
             if (empty($customer)) {
                 return response()->json([
                     "success " => false,
-                    "message" => "El usuario no existe",
+                    "message" => "El correo no corresponde a ningún usuario",
                     "data" => []
                 ], 401);
             } elseif (!Hash::check($request->password, $customer->password)) {
@@ -77,7 +113,7 @@
             ]);
         }
 
-        public function logout(Request $request)
+        public function logout(Request $request): JsonResponse
         {
             $user = Auth::user();
             $user->token()->revoke();
@@ -90,8 +126,10 @@
             ]);
         }
 
-        public function me(Request $request)
+        public function me(Request $request): JsonResponse
         {
+            $customer = Auth::user();
+            $customer->photo = Storage::url($customer->photo);
             return response()->json([
                 "success" => true,
                 "message" => "Datos de usuario: ",
@@ -101,7 +139,8 @@
             ]);
         }
 
-        public function isLogin() {
+        public function isLogin(): JsonResponse
+        {
             if (Auth::check()) {
                 return response()->json([
                     "success" => true,
@@ -123,5 +162,96 @@
                     ]
                 ]);
             }
+        }
+
+        public function getTrainer(Request $request): JsonResponse {
+            $customer = Auth::user();
+            $trainer = $customer->trainer;
+            $trainer->photo = Storage::url($trainer->photo);
+            $response = [
+                'success' => true,
+                'message' => "Cliente tiene al entrenador",
+                'data' => $trainer
+            ];
+            return response()->json($response);
+        }
+
+        public function getAllTrainings(Request $request): JsonResponse
+        {
+            $customer = Auth::user();
+            $trainings = $customer->trainings;
+            $response = [
+                'success' => true,
+                'message' => "Cliente tiene estos entrenamientos",
+                'data' => $trainings
+            ];
+            return response()->json($response);
+        }
+
+        public function pay(Request $request) {
+            $id = $request->id;
+            $customer = Customer::findOrFail($id);
+            if ($customer->nextPayment < today()) {
+                $customer->nextPayment = today()->addMonth();
+            } else {
+                $customer->nextPayment = Carbon::parse($customer->nextPayment)->addMonth();
+            }
+            $payment = new Payment();
+            $payment->payment_type = 'Efectivo';
+            $payment->payment_date = today();
+            $payment->paid = true;
+            $payment->customer_id = $customer->id;
+            $payment->save();
+            $customer->save();
+            return response()->json([
+                "success" => true,
+                "message" => "Pago realizado correctamente",
+            ]);
+        }
+
+        public function customerEditAccount(Request $request){
+            $customer = Auth::user();
+            $customer->name = $request->name;
+            $customer->surname = $request->surname;
+            $customer->typeTraining = $request->typeTraining;
+            $customer->email = $request->email;
+            $customer->trainer_id = $request->trainer_id;
+            if ($request->hasFile('photo')) {
+                $image = $request->file('photo');
+
+                // Valida la imagen
+                $validated = $request->validate([
+                    'photo' => 'required|image|max:4048', // máx 4 MB
+                ]);
+
+                // Elimina la imagen antigua si existe
+                if ($customer->photo) {
+                    Storage::delete($customer->photo);
+                }
+
+                // Guarda la imagen nueva y guarda su nombre en la base de datos
+                $imagePath = $image->store('public/customerPhoto');
+                $customer->photo = $imagePath;
+            }
+            $customer->save();
+
+            $response = [
+                'success' => true,
+                'message' => "Cliente editado correctamente"
+            ];
+            return response()->json($response);
+
+
+        }
+
+        public function endPoint(Request $request){
+            $user = Auth::user();
+            $user->tokens()->delete();
+            $response = [
+                'success' => true,
+                'message' => "Se ha cerrado sesión en todos los dispositivos correctamente"
+            ];
+            return response()->json($response);
+
         }
     }

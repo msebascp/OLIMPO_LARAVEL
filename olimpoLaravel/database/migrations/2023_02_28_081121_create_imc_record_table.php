@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('payments', function (Blueprint $table) {
+        Schema::create('imc_records', function (Blueprint $table) {
             $table->id();
-            $table->string('payment_type', 32);
-            $table->string('payment_date', 32);
-            $table->boolean('paid');
+            $table->integer('weight')->nullable();
+            $table->integer('height')->nullable();
+            $table->date('weighing_date');
+            $table->integer('imc')->nullable();
             $table->foreignId('customer_id')->constrained('customers');
             $table->timestamps();
         });
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payments');
+        Schema::dropIfExists('imc_records');
     }
 };
