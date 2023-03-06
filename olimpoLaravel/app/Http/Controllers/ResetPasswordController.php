@@ -27,6 +27,10 @@ class ResetPasswordController extends Controller
         }
         $token = Str::random(60);
         try {
+            if (DB::table('password_resets')->where('email', $email)->exists()) {
+                // Elimina la fila existente
+                DB::table('password_resets')->where('email', $email)->delete();
+            }
             DB::table('password_resets')->insert([
                 'email' => $email,
                 'token' => $token
@@ -102,6 +106,10 @@ class ResetPasswordController extends Controller
         }
         $token = Str::random(60);
         try {
+            if (DB::table('password_resets')->where('email', $email)->exists()) {
+                // Elimina la fila existente
+                DB::table('password_resets')->where('email', $email)->delete();
+            }
             DB::table('password_resets')->insert([
                 'email' => $email,
                 'token' => $token
