@@ -21,6 +21,7 @@ class PassportAuthTrainersController extends Controller
                 'name' => 'required',
                 'email' => 'required|email:rfc|unique:trainers',
                 'surname' => 'required',
+                'password' => 'required',
             ]);
         } catch (ValidationException $e) {
             $errors = $e->validator->getMessageBag();
@@ -38,13 +39,16 @@ class PassportAuthTrainersController extends Controller
                 $errorMessages['surname'] = 'El apellido es requerido.';
             }
 
+            if ($errors->has('password')) {
+                $errorMessages['surname'] = 'La contraseña es requerida.';
+            }
             return response()->json([
                 'success' => false,
                 'message' => 'Validation error',
                 'errors' => $errorMessages
             ], 422);
         }
-        $data['password'] = Hash::make('password');
+        $data['password'] = Hash::make($data['password']);
         $data['specialty'] = $request->specialty;
         $trainer = Trainer::create($data);
         return response()->json([

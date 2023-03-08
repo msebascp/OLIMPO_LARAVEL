@@ -23,6 +23,7 @@
                     'name' => 'required',
                     'email' => 'required|email:rfc|unique:customers',
                     'surname' => 'required',
+                    'password' => 'required',
                 ]);
             } catch (ValidationException $e) {
                 $errors = $e->validator->getMessageBag();
@@ -40,6 +41,9 @@
                     $errorMessages['surname'] = 'El apellido es requerido.';
                 }
 
+                if ($errors->has('password')) {
+                    $errorMessages['surname'] = 'La contraseña es requerida.';
+                }
                 return response()->json([
                     'success' => false,
                     'message' => 'Validation error',
@@ -47,7 +51,7 @@
                 ], 422);
             }
             $data['trainer_id'] = $request->trainer_id;
-            $data['password'] = Hash::make('password');
+            $data['password'] = Hash::make($data['password']);
             $data['typeTraining'] = $request->typeTraining;
             $data['dateInscription'] = today();
             $data['nextPayment'] = today()->addMonth();
