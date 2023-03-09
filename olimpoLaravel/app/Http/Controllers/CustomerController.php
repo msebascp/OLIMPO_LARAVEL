@@ -36,6 +36,7 @@ class CustomerController extends Controller
 
     public function delete(Request $request, $id)
     {
+        DB::table('payments')->where('customer_id', $id)->delete();
         DB::table('customers')->where('id', $id)->delete();
         $response = [
             'success' => true,
