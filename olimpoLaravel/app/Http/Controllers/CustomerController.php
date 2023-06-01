@@ -36,11 +36,24 @@ class CustomerController extends Controller
 
     public function delete(Request $request, $id)
     {
-        DB::table('payments')->where('customer_id', $id)->delete();
-        DB::table('customers')->where('id', $id)->delete();
+        $customer = Customer::findOrFail($id);
+        $customer->active = false;
+        $customer->save();
         $response = [
             'success' => true,
-            'message' => "Cliente borrado correctamente",
+            'message' => "Cliente dado de baja correctamente",
+        ];
+        return response()->json($response);
+    }
+
+    public function activeCustomer(Request $request, $id)
+    {
+        $customer = Customer::findOrFail($id);
+        $customer->active = true;
+        $customer->save();
+        $response = [
+            'success' => true,
+            'message' => "Cliente dado de baja correctamente",
         ];
         return response()->json($response);
     }
@@ -56,17 +69,17 @@ class CustomerController extends Controller
             $cliente->trainer_id = $request->trainer_id;
             if ($request->hasFile('photo')) {
                 $image = $request->file('photo');
-    
+
                 // Valida la imagen
                 $request->validate([
                     'photo' => 'image|max:4048', // máx 4 MB
                 ]);
-    
+
                 // Elimina la imagen antigua si existe
                 if ($cliente->photo) {
                     Storage::delete($cliente->photo);
                 }
-    
+
                 // Guarda la imagen nueva y guarda su nombre en la base de datos
                 $imagePath = $image->store('public/customerPhoto');
                 $cliente->photo = $imagePath;

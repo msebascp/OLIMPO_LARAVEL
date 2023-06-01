@@ -23,7 +23,8 @@ class CustomerSeeder extends Seeder
             'typeTraining' => 'Calistenia',
             'dateInscription' => today(),
             'nextPayment' => today()->addMonth(),
-            'trainer_id' => 1
+            'trainer_id' => 1,
+            'active' => true
         ]);
         DB::table('customers')->insert([
             'name' => 'Raul',
@@ -32,7 +33,8 @@ class CustomerSeeder extends Seeder
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
             'dateInscription' => today(),
             'nextPayment' => today()->addMonth(),
-            'trainer_id' => 1
+            'trainer_id' => 1,
+            'active' => true
         ]);
         DB::table('customers')->insert([
             'name' => 'Guillermo',
@@ -42,7 +44,8 @@ class CustomerSeeder extends Seeder
             'typeTraining' => 'Fuerza',
             'dateInscription' => today(),
             'nextPayment' => today()->addMonth(),
-            'trainer_id' => 2
+            'trainer_id' => 2,
+            'active' => true
         ]);
         DB::table('customers')->insert([
             'name' => 'Luis',
@@ -51,6 +54,7 @@ class CustomerSeeder extends Seeder
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
             'dateInscription' => today(),
             'nextPayment' => today()->addMonth(),
+            'active' => true
         ]);
 }
 }
