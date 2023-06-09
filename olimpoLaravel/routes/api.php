@@ -8,7 +8,8 @@
     use App\Http\Controllers\PassportAuthTrainersController;
     use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ResetPasswordController;
-use App\Http\Controllers\TrainerController;
+use App\Http\Controllers\ShoppingController;
+    use App\Http\Controllers\TrainerController;
     use App\Http\Controllers\PaymentController;
     use App\Http\Controllers\TrainingController;
     use Illuminate\Support\Facades\Route;
@@ -43,6 +44,11 @@ use App\Http\Controllers\TrainerController;
         Route::middleware('validaId')->get('/{id}/trainings', [CustomerController::class, 'getTrainings']);
         Route::get('/download/pdf/{filename}', [CustomerController::class, 'downloadPDF']);
     });
+
+    Route::middleware('validaId')->get('/productsShopping/{id}', [ShoppingController::class, 'getAllByCustomerId']);
+    Route::post('createProductShopping', [ShoppingController::class, 'create']);
+    Route::middleware('validaId')->delete('/deleteProductShopping/{id}', [ShoppingController::class, 'delete']);
+    Route::middleware('validaId')->post('/updateProductShopping/{id}', [ShoppingController::class, 'update']);
 
     Route::prefix('/imcRecords')->group(function () {
         Route::get('', [ImcRecordController::class, 'getAll']);
