@@ -15,4 +15,8 @@ class Product extends Model
         'price',
         'photo'
     ];
+
+    public function shopping() {
+        return $this->belongsTo(Shopping::class);
+    }
 }

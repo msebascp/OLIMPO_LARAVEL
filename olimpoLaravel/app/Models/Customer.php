@@ -27,6 +27,7 @@ class Customer extends Authenticatable
         'dateInscription',
         'nextPayment',
         'trainer_id',
+        'active',
     ];
 
     protected $hidden = [

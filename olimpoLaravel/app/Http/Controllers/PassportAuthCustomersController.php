@@ -55,6 +55,7 @@
             $data['typeTraining'] = $request->typeTraining;
             $data['dateInscription'] = today();
             $data['nextPayment'] = today()->addMonth();
+            $data['active'] = true;
             $customer = Customer::create($data);
             $payment = new Payment();
             $payment->payment_type = 'Efectivo';
