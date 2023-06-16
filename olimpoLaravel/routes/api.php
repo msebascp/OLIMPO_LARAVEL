@@ -51,6 +51,7 @@ Route::prefix('/customers')->group(function () {
     Route::middleware('validaId')->get('/productsShopping/{id}', [ShoppingController::class, 'getAllByCustomerId']);
     Route::post('createProductShopping', [ShoppingController::class, 'create']);
     Route::middleware('validaId')->delete('/deleteProductShopping/{id}', [ShoppingController::class, 'delete']);
+    Route::middleware('validaId')->delete('/deleteShoppingByIdProduct/{id}', [ShoppingController::class, 'deleteByIdProduct']);
     Route::middleware('validaId')->post('/updateProductShopping/{id}', [ShoppingController::class, 'update']);
 
     Route::prefix('/imcRecords')->group(function () {

@@ -77,6 +77,21 @@ class ShoppingController extends Controller
         ]);
     }
 
+    public function deleteByIdProduct(Request $request, $id_product)
+{
+    $products = Shopping::where('id_product', $id_product)->get();
+
+    foreach ($products as $product) {
+        $product->delete();
+    }
+
+    return response()->json([
+        'success' => true,
+        'message' => "Productos borrados correctamente",
+    ]);
+}
+
+
     public function update(Request $request, $id)
     {
         $product = Shopping::findOrFail($id);
